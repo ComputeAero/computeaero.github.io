@@ -1,0 +1,889 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="en">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2">
+
+<link rel="stylesheet" href="/css/main.css?v=7.0.1">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.0.1">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.0.1">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.0.1">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=7.0.1" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '7.0.1',
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false,"dimmer":false},
+    back2top: true,
+    back2top_sidebar: false,
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="数学，一个由无数抽象概念组成的集合，一门改变无数人的人生轨迹的课程，一个经常让人感叹“每个符号都认识但连在一起就不认识”的异形怪物，终于在这本书里学会了谦卑，被一个曾经的手下败将改变了命运，它就是“计算”。这本书《计算进化史：改变数学的命运》由法国数学家，逻辑学家，航空安全专家吉尔多维克撰写。同时，这本书也荣获法兰西学术院哲学大奖。因为我自身的学术背景跟计算数学息息相关，所以经常会看一些通识读物。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="《计算进化史：改变数学的命运》Note">
+<meta property="og:url" content="http://feilinx.com/2019/02/11/calculation-revolution-history/index.html">
+<meta property="og:site_name" content="Feilin Blog">
+<meta property="og:description" content="数学，一个由无数抽象概念组成的集合，一门改变无数人的人生轨迹的课程，一个经常让人感叹“每个符号都认识但连在一起就不认识”的异形怪物，终于在这本书里学会了谦卑，被一个曾经的手下败将改变了命运，它就是“计算”。这本书《计算进化史：改变数学的命运》由法国数学家，逻辑学家，航空安全专家吉尔多维克撰写。同时，这本书也荣获法兰西学术院哲学大奖。因为我自身的学术背景跟计算数学息息相关，所以经常会看一些通识读物。">
+<meta property="og:locale" content="en">
+<meta property="og:updated_time" content="2020-01-18T18:38:29.268Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="《计算进化史：改变数学的命运》Note">
+<meta name="twitter:description" content="数学，一个由无数抽象概念组成的集合，一门改变无数人的人生轨迹的课程，一个经常让人感叹“每个符号都认识但连在一起就不认识”的异形怪物，终于在这本书里学会了谦卑，被一个曾经的手下败将改变了命运，它就是“计算”。这本书《计算进化史：改变数学的命运》由法国数学家，逻辑学家，航空安全专家吉尔多维克撰写。同时，这本书也荣获法兰西学术院哲学大奖。因为我自身的学术背景跟计算数学息息相关，所以经常会看一些通识读物。">
+
+
+
+
+
+
+  <link rel="canonical" href="http://feilinx.com/2019/02/11/calculation-revolution-history/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>《计算进化史：改变数学的命运》Note | Feilin Blog</title>
+  
+
+
+
+
+  <script async src="//www.googletagmanager.com/gtag/js?id=UA-101617499-2"></script>
+  <script>
+    var host = window.location.hostname;
+    if (host !== "localhost" || !true) {
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-101617499-2');
+    }
+  </script>
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+  
+    
+  
+
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Feilin Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="Toggle navigation bar">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>Home</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>Archives</a>
+
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://feilinx.com/2019/02/11/calculation-revolution-history/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Feilin Jia">
+      <meta itemprop="description" content="Note on computing, IT, education, etc.">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Feilin Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">《计算进化史：改变数学的命运》Note
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+
+              
+                
+              
+
+              <time title="Created: 2019-02-10 23:02:52" itemprop="dateCreated datePublished" datetime="2019-02-10T23:02:52-06:00">2019-02-10</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Edited on</span>
+                
+                <time title="Modified: 2020-01-18 12:38:29" itemprop="dateModified" datetime="2020-01-18T12:38:29-06:00">2020-01-18</time>
+              
+            
+          </span>
+
+          
+
+          
+            
+            
+              
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+            
+                <span class="post-meta-item-text">Comments: </span>
+                <a href="/2019/02/11/calculation-revolution-history/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2019/02/11/calculation-revolution-history/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="post-meta-item-icon">
+            <i class="fa fa-eye"></i>
+             Views:  
+            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+            </span>
+          
+
+          
+            <div class="post-symbolscount">
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Symbols count in article: </span>
+                
+                <span title="Symbols count in article">2.8k</span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Reading time &asymp;</span>
+                
+                <span title="Reading time">3 mins.</span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>数学，一个由无数抽象概念组成的集合，一门改变无数人的人生轨迹的课程，一个经常让人感叹“每个符号都认识但连在一起就不认识”的异形怪物，终于在这本书里学会了谦卑，被一个曾经的手下败将改变了命运，它就是“计算”。这本书《计算进化史：改变数学的命运》由法国数学家，逻辑学家，航空安全专家吉尔多维克撰写。同时，这本书也荣获法兰西学术院哲学大奖。因为我自身的学术背景跟计算数学息息相关，所以经常会看一些通识读物。但是去年在读过《微积分的历程：从牛顿到勒贝格》之后，我一度觉得计算跟数学核心的距离越来越远，越来越成为一个被数学家们看不起的“实用工具”。直到看到这本书，它不仅把我的疑虑全部扫除，而且还给我足够的信心：如果没有计算，数学恐怕只能画地为牢，兴许早就被当做希腊或者法国的“传统文化”进入博物馆了。<br><a id="more"></a><br>这本书的核心就是在论述“计算”从数学中产生，到被抽象，再到被推理边缘化，最后绝杀返场的辛酸历史。我们知道，数学里充斥着逻辑推理，很多人都喜欢精巧的推理，特别是在看《福尔摩斯》《狄仁杰系列》的时候，经常对里面一环扣一环的推理拍案惊奇。它就像一座艺术品，少一点显得不严密，多一点又太冗长。这些巧夺天工的艺术品，组成一座座优雅的宫殿，没有一丝烟尘。在很长一段时间里，计算被视为丑陋的锄头而被搁置一边，数学家们竞相追逐的目标就是那一个个晶莹剔透的艺术品，无数大师构建了很多“上帝”级别的蓝图。但是直到有一天，基于逻辑推理的宫殿开始出现裂缝，而此时“计算”从沉睡中被唤醒了。。。</p>
+<h2 id="1-从计算到推理的转变"><a href="#1-从计算到推理的转变" class="headerlink" title="1 从计算到推理的转变"></a>1 从计算到推理的转变</h2><p>从一开始，数学其实就是产生于“算学”。出于生存需要，美索不达米亚和埃及的会计师早早就掌握了加减乘除的计算法则， 比如划分田地，分配粮食等等。计算土地和粮食，都是基于有限的数量做计算，但是如果把100平方米，100颗鸡蛋，100根绳子，100个日起日落的共同点拿出来，那就是一个抽象的数字：100。它摆脱了任何物理上的约束，从而可以扩大无穷倍，直到无穷大。2500年前的毕达哥拉斯学派汇集了一群“异想天开”的人，他们不想再受现实的局限，而是想找到那些涉及无穷大的道理。他们在思考一个命题：一个平方数不可能是另一个平方数的2倍。这里面所提到的平方数没有上下界，所以就算找来前1万个自然数做验证，也无法确定命题成立，也许第10001个数就能推翻命题。所以，毕达哥拉斯学派的人一致认为：基于具体数字的有限计算是无法解决涉及到无穷大（或无穷小）的问题的，所以数学要靠逻辑推理来判断。从那以后，他们认为“计算”只要能当做一个工具来解决实际问题就好了，真正的数学肯定是基于逻辑推理的。此后，无数哲学家和数学家们（苏格拉底，亚里士多德，莱布尼兹，罗素，希尔伯特等等）为了追求逻辑中的纯粹性，开始对抽象的概念再进行抽象，用来触碰“天生”（先验）的逻辑，从而诞生了公理化方法。至此猜想-定理-证明成了数学的三座支柱，计算被弃置一旁。</p>
+<h2 id="2-公理化和谓词逻辑"><a href="#2-公理化和谓词逻辑" class="headerlink" title="2 公理化和谓词逻辑"></a>2 公理化和谓词逻辑</h2><p>这一部分详细介绍了公理化方法的创立。这一部分非常抽象也很刷新认识。一个例子是在几何中的一条公理“过两点有且只有一条直线”中的很多词，比如“点”，“线”，“面”，“过”完全可以去掉任何现实含义，而抽象成A,B,C,D四个字母，然后之后所有的定理也按照这种方式来推导，不做任何现实意义的解读。这样做的结果居然丝毫不影响构建现在的整个几何学大厦。这个观点一开始让我觉得很疯狂，如果真是这样，那么我们十几年来学过的所有几何定理仅仅是一些字母的排列组合。并且，如果公理改变，那些定理不过是把字母的顺序调一调而已，而且就连精心设计的证明过程，也可以看做恰好能自圆其说的字母组合。这一部分，让我觉得数学的公理化已经完全达到了人类抽象能力的极限，如果一切顺利的话，那么正如希尔伯特畅想的那样，数学的这个房间建好了，大家以后直接登录进来各取所需就好。可惜，丘齐和图灵用“逻辑推理”否定了希尔伯特对“逻辑推理”的畅想，具体的方法涉及到可计算理论和构造性理论，这些都直接导致了计算机的诞生。这里面太过复杂，而且很多概念都上升到了哲学层面（构造主义），实话说，很难通过一本科普级别的书就搞明白，这里就略过。</p>
+<h2 id="3-公理化危机"><a href="#3-公理化危机" class="headerlink" title="3 公理化危机"></a>3 公理化危机</h2><p>当公理化无法解决很多问题的时候，计算就又回来了。这里就举一个例子：四色定理的证明。给任何一个地图上色，要求是相接触的图形颜色不同，那么只需要四种颜色就够了。这个问题在1853年提出，25年后有人声称解决了问题，但是10年之后被发现证明有误。直到1976年，开尼斯和沃尔夫冈才借助计算机彻底解决了问题。这个证明的过程的逻辑非常严密，没有漏洞，但是却饱受争议，因为这个证明毫无优雅可言，而且里面使用了简单粗暴的穷举法。通过让计算机连续计算1200个小时来验证1500个结果，一份长达几百万页的机器证明诞生了。没有人能够通读，所以打印也变得毫无意义。为了验证这个证明是否正确，2005年乔治和本杰明写了一个程序验证了之前的机器证明。在这一刻，数学变成了实验科学，以后每一位数学家的手上都将沾满丑陋的计算带来的灰尘。到底数学的未来走向何方？本书的作者认为在未来的某个读者，一定会对20世纪的数学家完全靠手工解决所有问题的历史感到吃惊。</p>
+<p>虽然未来不得而知，我作为一个资深的“伪数学迷”，如果每隔一段时间能感受到一些思维冲击就已经很满足了。最后想说一下，本书的作者的头衔起初让我非常不解，因为我无论如何都发现不了“逻辑学家”和“航空安全专家”这两者的联系，一个有关最底层的先验判断，一个是很表面的工程应用，不过在读完书后觉得，其实在一个更广阔的意义上，“逻辑”和“安全”可以划等号，因为逻辑来自于本能的判断，在这种本能的驱使下，前辈们不断地对现状提出质疑并加以修正，才最终让我们的周围看上去那么自恰，由此引发的心理舒适谓之“安全”。再次感谢图灵能引进这本带来思想冲击的书，想看就请购买吧！(<a href="http://www.ituring.com.cn/book/1926" target="_blank" rel="noopener">去买书</a>)</p>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/02/10/burn-cpu-calorie-1/" rel="next" title="Burn CPU's Calories (1)">
+                <i class="fa fa-chevron-left"></i> Burn CPU's Calories (1)
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/02/23/burn-cpu-calories-2/" rel="prev" title="Burn CPU's Calories (2)">
+                Burn CPU's Calories (2) <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+      </div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Feilin Jia</p>
+              <div class="site-description motion-element" itemprop="description">Note on computing, IT, education, etc.</div>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">14</span>
+                    <span class="site-state-item-name">posts</span>
+                  </a>
+                </div>
+              
+
+              
+
+              
+            </nav>
+          
+
+          
+
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-从计算到推理的转变"><span class="nav-number">1.</span> <span class="nav-text">1 从计算到推理的转变</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-公理化和谓词逻辑"><span class="nav-number">2.</span> <span class="nav-text">2 公理化和谓词逻辑</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-公理化危机"><span class="nav-number">3.</span> <span class="nav-text">3 公理化危机</span></a></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+  
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Feilin Jia</span>
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    
+      <span class="post-meta-item-text">Symbols count total: </span>
+    
+    <span title="Symbols count total">96k</span>
+  
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    
+      <span class="post-meta-item-text">Reading time total &asymp;</span>
+    
+    <span title="Reading time total">1:27</span>
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> v3.9.0</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> v7.0.1</div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-user"></i>
+    </span>
+    <span class="site-uv" title="Total Visitors">
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+    </span>
+  
+
+  
+    <span class="post-meta-divider">|</span>
+  
+
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-eye"></i>
+    </span>
+    <span class="site-pv" title="Total Views">
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+
+  
+
+
+  <script src="/js/src/utils.js?v=7.0.1"></script>
+
+  <script src="/js/src/motion.js?v=7.0.1"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/src/affix.js?v=7.0.1"></script>
+
+  <script src="/js/src/schemes/pisces.js?v=7.0.1"></script>
+
+
+
+  
+  <script src="/js/src/scrollspy.js?v=7.0.1"></script>
+<script src="/js/src/post-details.js?v=7.0.1"></script>
+
+
+
+  
+
+
+  <script src="/js/src/next-boot.js?v=7.0.1"></script>
+
+
+  
+
+  
+
+  
+
+  
+  
+  <script id="dsq-count-scr" src="https://feilinx.disqus.com/count.js" async></script>
+
+
+<script>
+  var disqus_config = function() {
+    this.page.url = "http://feilinx.com/2019/02/11/calculation-revolution-history/";
+    this.page.identifier = "2019/02/11/calculation-revolution-history/";
+    this.page.title = '《计算进化史：改变数学的命运》Note';
+    };
+  function loadComments() {
+    var d = document, s = d.createElement('script');
+    s.src = 'https://feilinx.disqus.com/embed.js';
+    s.setAttribute('data-timestamp', '' + +new Date());
+    (d.head || d.body).appendChild(s);
+  }
+  
+    loadComments();
+  
+</script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({"tex2jax":{"inlineMath":[["$","$"],["\\(","\\)"]],"skipTags":["script","noscript","style","textarea","pre","code"],"processEscapes":true},"TeX":{"equationNumbers":{"autoNumber":"AMS"}}});
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+  
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

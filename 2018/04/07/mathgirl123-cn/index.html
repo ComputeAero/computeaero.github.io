@@ -1,0 +1,912 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="en">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2">
+
+<link rel="stylesheet" href="/css/main.css?v=7.0.1">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.0.1">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.0.1">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.0.1">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=7.0.1" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '7.0.1',
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false,"dimmer":false},
+    back2top: true,
+    back2top_sidebar: false,
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="我是从图灵社区那里偶然看到《数学女孩》这套书的。当时看到的是第一部，刚翻了几页就觉得有意思，就立刻扫码购买了。这本书里面写的是几个日本中学生的日常学习（80%）和生活（20%），除了男主（高二）之外，还有三个女主，分别是同级的高中生米尔嘉，高一的泰朵拉，还有读初中（还是小学？）的远房表妹尤里。米尔嘉是个bug级的存在，作为一个高中生就已经参加国际数学会议，能听懂大部分内容，并且已经预定了去普林斯顿">
+<meta property="og:type" content="article">
+<meta property="og:title" content="《数学女孩1|2|3》">
+<meta property="og:url" content="http://feilinx.com/2018/04/07/mathgirl123-cn/index.html">
+<meta property="og:site_name" content="Feilin Blog">
+<meta property="og:description" content="我是从图灵社区那里偶然看到《数学女孩》这套书的。当时看到的是第一部，刚翻了几页就觉得有意思，就立刻扫码购买了。这本书里面写的是几个日本中学生的日常学习（80%）和生活（20%），除了男主（高二）之外，还有三个女主，分别是同级的高中生米尔嘉，高一的泰朵拉，还有读初中（还是小学？）的远房表妹尤里。米尔嘉是个bug级的存在，作为一个高中生就已经参加国际数学会议，能听懂大部分内容，并且已经预定了去普林斯顿">
+<meta property="og:locale" content="en">
+<meta property="og:image" content="http://feilinx.com/images/mathgirls.jpg">
+<meta property="og:updated_time" content="2020-01-18T18:38:29.268Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="《数学女孩1|2|3》">
+<meta name="twitter:description" content="我是从图灵社区那里偶然看到《数学女孩》这套书的。当时看到的是第一部，刚翻了几页就觉得有意思，就立刻扫码购买了。这本书里面写的是几个日本中学生的日常学习（80%）和生活（20%），除了男主（高二）之外，还有三个女主，分别是同级的高中生米尔嘉，高一的泰朵拉，还有读初中（还是小学？）的远房表妹尤里。米尔嘉是个bug级的存在，作为一个高中生就已经参加国际数学会议，能听懂大部分内容，并且已经预定了去普林斯顿">
+<meta name="twitter:image" content="http://feilinx.com/images/mathgirls.jpg">
+
+
+
+
+
+
+  <link rel="canonical" href="http://feilinx.com/2018/04/07/mathgirl123-cn/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>《数学女孩1|2|3》 | Feilin Blog</title>
+  
+
+
+
+
+  <script async src="//www.googletagmanager.com/gtag/js?id=UA-101617499-2"></script>
+  <script>
+    var host = window.location.hostname;
+    if (host !== "localhost" || !true) {
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-101617499-2');
+    }
+  </script>
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+  
+    
+  
+
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Feilin Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="Toggle navigation bar">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>Home</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>Archives</a>
+
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://feilinx.com/2018/04/07/mathgirl123-cn/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Feilin Jia">
+      <meta itemprop="description" content="Note on computing, IT, education, etc.">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Feilin Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">《数学女孩1|2|3》
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+
+              
+                
+              
+
+              <time title="Created: 2018-04-07 22:28:00" itemprop="dateCreated datePublished" datetime="2018-04-07T22:28:00-05:00">2018-04-07</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Edited on</span>
+                
+                <time title="Modified: 2020-01-18 12:38:29" itemprop="dateModified" datetime="2020-01-18T12:38:29-06:00">2020-01-18</time>
+              
+            
+          </span>
+
+          
+
+          
+            
+            
+              
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+            
+                <span class="post-meta-item-text">Comments: </span>
+                <a href="/2018/04/07/mathgirl123-cn/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2018/04/07/mathgirl123-cn/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="post-meta-item-icon">
+            <i class="fa fa-eye"></i>
+             Views:  
+            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+            </span>
+          
+
+          
+            <div class="post-symbolscount">
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Symbols count in article: </span>
+                
+                <span title="Symbols count in article">2.7k</span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Reading time &asymp;</span>
+                
+                <span title="Reading time">2 mins.</span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>我是从图灵社区那里偶然看到《数学女孩》这套书的。当时看到的是第一部，刚翻了几页就觉得有意思，就立刻扫码购买了。这本书里面写的是几个日本中学生的日常学习（80%）和生活（20%），除了男主（高二）之外，还有三个女主，分别是同级的高中生米尔嘉，高一的泰朵拉，还有读初中（还是小学？）的远房表妹尤里。米尔嘉是个bug级的存在，作为一个高中生就已经参加国际数学会议，能听懂大部分内容，并且已经预定了去普林斯顿大学主修数学。男主的设定比较符合大部分人的水平，基础不错，逻辑性也较强。泰朵拉一开始特别惧怕数学，在数学学习上总是不得要领，不过在大家的帮助下，快速进步，达到了跟男主相似的水平。尤里是初中生，第三部里才进来，水平肯定不及其他三位，不过她属于那种非常善于思考的类型，有时候提出的数学问题，甚至能给其他人带来灵感和启发。所有的故事都是围绕他们四个人在学习数学中遇到的问题而展开，逐步深入，通过他们的谈话来引出一个又一个数学知识，让读者看到了他们面对数学时的热情，迷茫，偶尔犯晕与最后的自信满满。这也正是这个系列最吸引人的地方，它让我看到的不是像高斯、牛顿、爱因斯坦那种大神级别的人物，高高在上地向大众阐述着世界的真理。这个系列让我看到的是他们四个相互帮助并一起成长的过程。主人公们犯过错误，也走过弯路，但从他们的喜怒哀乐中，让我仿佛看到了曾经的自己，这无疑拉近了作者与读者的距离。<br><a id="more"></a><br><img src="/images/mathgirls.jpg" alt="Memory_overview"><br>这个系列的作者是日本的程序员结城浩(Hiroshi Yuki)。写过程序的人都应该知道，编程其实是一件很耗时间和精力的事情，结城浩能在工作之余依然高产地写作，让我心生敬佩。目前日文版已经出在了第六部，多亏图灵社区的努力，前三部都有了中文版。前几天看到第四部也在翻译中。作者在后记中也说没想到会有这么大的反响，才决定出后续的几部，所以第一部没有副标题，第二部的副标题是费马大定理，第三部的副标题是哥德尔不完备性定理。每一部之间没有硬性关联，不过基本上里面涉及到概念是由浅到深的。说也惭愧，我虽然接受过大学高等教育，但是当看到第二部结尾部分的费马大定理的证明轮廓时就已经非常迷糊讲了，没有完全看明白。唯一的收获是看明白了一个费马大定理n=4时的一个特例的证明，也算是一种自我安慰。第三部的难度就已经很明显了，最后一章已经脱离了科普的范围，而是完全按照哥德尔博士的论文把哥德尔不完备性定理分成几十个小定理和定义去逐步证明和理解，我完全跳过了最后一章。作者结城浩在后记里也坦承，为弄懂哥德尔不完备性定理付出了巨大努力，自己阅读数理逻辑方面的教材，请教很多数学教授，前前后后花了一年的时间才写完第三部，这种为了解决难题而不断寻找解决方法的精神，值得我学习。</p>
+<p>由于时间关系，这里我就不展开说了，只列举几个给我留下比较深刻印象的部分：</p>
+<p><strong>第一部：</strong><br><strong>1. 证明质数有无穷多个。</strong><br><strong>第二部：</strong><br><strong>2. 群、环、域的由来 （让我明白，数学就是抽象，抽象，再抽象！）</strong><br><strong>3. 阿贝尔群</strong><br><strong>4. 费马大定理n=4的特例证明居然跟一个定理有关“不存在三边皆为自然数，而面积为平方数的直角三角形”</strong><br><strong>第三部：</strong><br><strong>5. 戴德金认为，整体和部分之间存在双向映射代表无限集合</strong><br><strong>6. 皮亚诺算术公理</strong><br><strong>7. 罗素悖论{x|x not belongs to x}是否是自身的元素</strong><br><strong>8. 有理数集是可数集</strong><br><strong>9. 实数集是不可数集（康托尔对角证明法）</strong><br><strong>10. 哥德尔第一不完备性定理: 满足相容、蕴含皮亚诺算术公理且可递归的形式系统，不存在A和非A的形式证明</strong><br><strong>11.  哥德尔第二不完备性定理：在满足上面条件的形式系统中，无法证明自身的相容性。所以如果想证明某个形式系统相容，就需要一个更‘强’的系统来证明它。</strong></p>
+<p>时间有限，就写这么多，总之虽然没完全搞懂里面的知识，但是其探索精神是领略到了（这是让我跳过不懂部分的绝佳理由）。唯一让我不满意的是，三部下来，竟然只有男主在原地踏步！其他人都像坐着直升飞机在进步，比如第一部里米尔嘉像一个大学生的水平，第二部里像研究生，第三部里直接参加国际会议，转学去普林斯顿主修数学，快能跟跟数学家谈笑风生了。再比如第一部里泰朵拉最开始连左右极限都不懂，男主还颇有优越感地给她解释，在第二部里发现泰朵拉比自己更快地找到了一个问题的解法而开始怀疑自己，到第三部里，男主貌似也接受了被泰朵拉赶超的事实。尤里的进步无疑是最大的，因为本身几乎没有数学基础，到最后居然也在跟米尔嘉讨论哥德尔不完备性定理，让我觉得不可思议。也许这正是这本书叫《数学女孩》的原因吧，男主是用来用来衬托女孩们的进步的。</p>
+<p>最后套用一句最让我觉得好笑的话来结束，第三部里的尤里说“数学书里经常有用于检查视力的符号（这里指存在符号<span>$\exists$</span><!-- Has MathJax -->）。”那么为了学好数学，我要去做眼保健操了，再见！哦，最后附上图书的链接：<br><a href="http://www.ituring.com.cn/book/1675" target="_blank" rel="noopener">数学女孩 1</a><br><a href="http://www.ituring.com.cn/book/1677" target="_blank" rel="noopener">数学女孩 2</a><br><a href="http://www.ituring.com.cn/book/1859" target="_blank" rel="noopener">数学女孩 3</a></p>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/04/07/mpi-2/" rel="next" title="My Q&A on MPI (2)">
+                <i class="fa fa-chevron-left"></i> My Q&A on MPI (2)
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/04/15/sci-soft-dev-1/" rel="prev" title="Scientific Software Development I">
+                Scientific Software Development I <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+      </div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+
+      <div class="site-overview-wrap sidebar-panel sidebar-panel-active">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Feilin Jia</p>
+              <div class="site-description motion-element" itemprop="description">Note on computing, IT, education, etc.</div>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">14</span>
+                    <span class="site-state-item-name">posts</span>
+                  </a>
+                </div>
+              
+
+              
+
+              
+            </nav>
+          
+
+          
+
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+
+      
+
+    </div>
+  </aside>
+  
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Feilin Jia</span>
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    
+      <span class="post-meta-item-text">Symbols count total: </span>
+    
+    <span title="Symbols count total">96k</span>
+  
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    
+      <span class="post-meta-item-text">Reading time total &asymp;</span>
+    
+    <span title="Reading time total">1:27</span>
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> v3.9.0</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> v7.0.1</div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-user"></i>
+    </span>
+    <span class="site-uv" title="Total Visitors">
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+    </span>
+  
+
+  
+    <span class="post-meta-divider">|</span>
+  
+
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-eye"></i>
+    </span>
+    <span class="site-pv" title="Total Views">
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+
+  
+
+
+  <script src="/js/src/utils.js?v=7.0.1"></script>
+
+  <script src="/js/src/motion.js?v=7.0.1"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/src/affix.js?v=7.0.1"></script>
+
+  <script src="/js/src/schemes/pisces.js?v=7.0.1"></script>
+
+
+
+  
+  <script src="/js/src/scrollspy.js?v=7.0.1"></script>
+<script src="/js/src/post-details.js?v=7.0.1"></script>
+
+
+
+  
+
+
+  <script src="/js/src/next-boot.js?v=7.0.1"></script>
+
+
+  
+
+  
+
+  
+
+  
+  
+  <script id="dsq-count-scr" src="https://feilinx.disqus.com/count.js" async></script>
+
+
+<script>
+  var disqus_config = function() {
+    this.page.url = "http://feilinx.com/2018/04/07/mathgirl123-cn/";
+    this.page.identifier = "2018/04/07/mathgirl123-cn/";
+    this.page.title = '《数学女孩1|2|3》';
+    };
+  function loadComments() {
+    var d = document, s = d.createElement('script');
+    s.src = 'https://feilinx.disqus.com/embed.js';
+    s.setAttribute('data-timestamp', '' + +new Date());
+    (d.head || d.body).appendChild(s);
+  }
+  
+    loadComments();
+  
+</script>
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+  
+    
+      <script type="text/x-mathjax-config">
+  
+
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$', '$'], ['\\(', '\\)'] ],
+      processEscapes: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      
+      equationNumbers: {
+        autoNumber: 'AMS'
+      }
+    }
+  });
+  MathJax.Hub.Register.StartupHook('TeX Jax Ready', function() {
+    MathJax.InputJax.TeX.prefilterHooks.Add(function(data) {
+      if (data.display) {
+        var next = data.script.nextSibling;
+        while (next && next.nodeName.toLowerCase() === '#text') { next = next.nextSibling }
+        if (next && next.nodeName.toLowerCase() === 'br') { next.parentNode.removeChild(next) }
+      }
+    });
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for (i = 0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+<script src="//cdn.jsdelivr.net/npm/mathjax@2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+<style>
+.MathJax_Display {
+  overflow-x: scroll;
+  overflow-y: hidden;
+}
+</style><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({"tex2jax":{"inlineMath":[["$","$"],["\\(","\\)"]],"skipTags":["script","noscript","style","textarea","pre","code"],"processEscapes":true},"TeX":{"equationNumbers":{"autoNumber":"AMS"}}});
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
+
+    
+  
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

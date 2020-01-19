@@ -1,0 +1,891 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="en">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2">
+
+<link rel="stylesheet" href="/css/main.css?v=7.0.1">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.0.1">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.0.1">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.0.1">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=7.0.1" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '7.0.1',
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false,"dimmer":false},
+    back2top: true,
+    back2top_sidebar: false,
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="多年以前，在一个机缘巧合之下，认识了浙江大学的蔡天新老师，之后便“别后音书两不闻”。前几天，Kindle的自动推送里居然出现了他的一本书，叫《数学与人类文明》。刚看到这个书名时，觉得这个标题既空泛又过于宏大，所以我推测这应该是一套枯燥冗长的“学院派”系列丛书。而且书名里直接写到“人类文明”，不免让人感受到作者在隐隐中透露出的那种”唯我独尊”式的自夸和自傲。以我的经验，这类大部头只可能出现在两种地方">
+<meta property="og:type" content="article">
+<meta property="og:title" content="《数学与人类文明》Note">
+<meta property="og:url" content="http://feilinx.com/2019/03/04/math-human-civilization/index.html">
+<meta property="og:site_name" content="Feilin Blog">
+<meta property="og:description" content="多年以前，在一个机缘巧合之下，认识了浙江大学的蔡天新老师，之后便“别后音书两不闻”。前几天，Kindle的自动推送里居然出现了他的一本书，叫《数学与人类文明》。刚看到这个书名时，觉得这个标题既空泛又过于宏大，所以我推测这应该是一套枯燥冗长的“学院派”系列丛书。而且书名里直接写到“人类文明”，不免让人感受到作者在隐隐中透露出的那种”唯我独尊”式的自夸和自傲。以我的经验，这类大部头只可能出现在两种地方">
+<meta property="og:locale" content="en">
+<meta property="og:updated_time" content="2020-01-18T18:38:29.268Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="《数学与人类文明》Note">
+<meta name="twitter:description" content="多年以前，在一个机缘巧合之下，认识了浙江大学的蔡天新老师，之后便“别后音书两不闻”。前几天，Kindle的自动推送里居然出现了他的一本书，叫《数学与人类文明》。刚看到这个书名时，觉得这个标题既空泛又过于宏大，所以我推测这应该是一套枯燥冗长的“学院派”系列丛书。而且书名里直接写到“人类文明”，不免让人感受到作者在隐隐中透露出的那种”唯我独尊”式的自夸和自傲。以我的经验，这类大部头只可能出现在两种地方">
+
+
+
+
+
+
+  <link rel="canonical" href="http://feilinx.com/2019/03/04/math-human-civilization/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>《数学与人类文明》Note | Feilin Blog</title>
+  
+
+
+
+
+  <script async src="//www.googletagmanager.com/gtag/js?id=UA-101617499-2"></script>
+  <script>
+    var host = window.location.hostname;
+    if (host !== "localhost" || !true) {
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-101617499-2');
+    }
+  </script>
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+  
+    
+  
+
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Feilin Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="Toggle navigation bar">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>Home</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>Archives</a>
+
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://feilinx.com/2019/03/04/math-human-civilization/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Feilin Jia">
+      <meta itemprop="description" content="Note on computing, IT, education, etc.">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Feilin Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">《数学与人类文明》Note
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+
+              
+                
+              
+
+              <time title="Created: 2019-03-04 00:34:24" itemprop="dateCreated datePublished" datetime="2019-03-04T00:34:24-06:00">2019-03-04</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Edited on</span>
+                
+                <time title="Modified: 2020-01-18 12:38:29" itemprop="dateModified" datetime="2020-01-18T12:38:29-06:00">2020-01-18</time>
+              
+            
+          </span>
+
+          
+
+          
+            
+            
+              
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+            
+                <span class="post-meta-item-text">Comments: </span>
+                <a href="/2019/03/04/math-human-civilization/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2019/03/04/math-human-civilization/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="post-meta-item-icon">
+            <i class="fa fa-eye"></i>
+             Views:  
+            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+            </span>
+          
+
+          
+            <div class="post-symbolscount">
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Symbols count in article: </span>
+                
+                <span title="Symbols count in article">3k</span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Reading time &asymp;</span>
+                
+                <span title="Reading time">3 mins.</span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>多年以前，在一个机缘巧合之下，认识了浙江大学的蔡天新老师，之后便“别后音书两不闻”。前几天，Kindle的自动推送里居然出现了他的一本书，叫《数学与人类文明》。刚看到这个书名时，觉得这个标题既空泛又过于宏大，所以我推测这应该是一套枯燥冗长的“学院派”系列丛书。而且书名里直接写到“人类文明”，不免让人感受到作者在隐隐中透露出的那种”唯我独尊”式的自夸和自傲。以我的经验，这类大部头只可能出现在两种地方。一是大学的图书馆，而且这类书往往会被放在最人迹罕至的书架底层的角落里，唯一的价值是用来刷这本书的存在感；二是公司董事长办公室的书架上，而且常常会被放在最显眼的位置，唯一的价值是用来刷公司的存在感。但是当我点开后发现，相比较于它的书名，这其实是一本小书，一共也就20多万字，那就拿来看看也无妨。这本书从数学的起源讲起，讲到阿拉伯数字，进制，到演绎推理，再到打破正统追求自由的现代数学，颇有一种读《XX简史》的意味。其中最让我感兴趣的就是它比较详细地介绍了从先秦到宋元时期，在中国大地上诞生的数学和数学家们。读到那一段时期的历史时，在倍感亲切之余也感到非常惋惜，因为中国古代很多曾经先进的思潮由于各种原因被戛然而止。最后，这本书的一大特色就是把数学和艺术从时间发展顺序上联系了起来，虽然不免招致“强拉硬拽”的批判，但也或许揭示了某些深层次的问题，总之给我带来了思想冲击。<br><a id="more"></a></p>
+<h2 id="1-数学的起源到希腊文明"><a href="#1-数学的起源到希腊文明" class="headerlink" title="1 数学的起源到希腊文明"></a>1 数学的起源到希腊文明</h2><p>数学起源于最古来的“计数”，在之前的《计算进化史》中也有类似的描述。比如人们把打来的猎物进行储存，就需要用绳子打结来记录。当数字越来越大时，就催生了进制。因为一年中有12个朔望月，所以产生了12进制，比如1英尺等于12英寸，1先令等于12便士，1英镑等于12盎司。巴比伦产生了60进制，比如每小时60分钟，每分钟60秒，这个一直沿用至今。不过在世界范围内最普遍的还是10进制，比如古埃及的象形数字，中国的甲骨文数字，希腊的阿提卡数字，印度的婆罗门数字，都纷纷采用了10进制。这其中的原因，恐怕很难找到一个令所有人信服的解释，但是亚里士多德的一个解释是“10进制的广泛采纳，只不过是由于我们生下来有10个手指这样的一个解剖学事实。”亚里士多德首先使用了形式逻辑学的“三段论”，这被以后的推理演绎视为圭臬。</p>
+<p>数学真正意义上的发展要从希腊开始讲起，那里的人们出身于游牧民族，没有君临一切的思想枷锁，更喜欢接触新鲜事物。有关这一点，在中国那一章里也有类似的体现。毕达哥拉斯就是这个时期的代表人物，如果对他不熟没关系，那么下面这3位，你肯定听过：哥白尼，伽利略，莱布尼兹。前面这3位都自称是毕达哥拉斯思想的最后一位传人，可想而知毕达哥拉斯应该属于乔布斯式的人物。此外，亚历山大学派的欧几里得的《几何原本》第一次汇总了正统的几何学，挤掉了前人的著作而成为官方指定的“红宝书”。阿基米德除了因为洗澡发现了浮力定律之外，还得到了当时最精确的圆周率3.14。这里先记住这个记录，因为这个记录将会被魏晋南北朝时期的刘辉碾压，后者又会被祖冲之碾压，而现在的计算机又可以把所有人碾压，所以说数学可以被看做是一部碾压与被碾压的历史。</p>
+<h2 id="2-中国（先秦到宋元）"><a href="#2-中国（先秦到宋元）" class="headerlink" title="2 中国（先秦到宋元）"></a>2 中国（先秦到宋元）</h2><p>在先秦的诸子百家时期，其实名家和墨家就提出了抽象逻辑，但是当时这两家的影响力远小于儒家，道家和法家，而后面这三个又很少关心数学问题，所以抽象逻辑的思想并没有广泛流传。到了西汉时期，《周髀算经》里提到了勾股定理，这个时间比毕达哥拉斯要早，但是可惜没有证明过程。直到公元3世纪的三国时代，才由东吴的数学家赵爽完成了证明过程。《九章算术》里出现了无理数的概念，但是没有深究。到了魏晋南北朝时期，因为长期的国家分裂和杀戮战争，人们不再独尊儒术，而去追求崇尚自然和超然物外的风流自赏（即魏晋风度）。对待自然，思辨之风又复兴了起来，于是中国古代的数学迎来了一个小高潮。刘辉开创了逻辑证明的先河，写了《海岛算经》，用割圆术把圆周率算到了3.1416。祖冲之在计算历法时，基于刘辉的方法，把圆周率算到了7位小数；再用刘辉的“牟合方盖”得到了球体的计算公式，写了一本风靡国子监和太学院的畅销书《缀术》，可惜很快失传。但是，后来随着隋唐大一统的盛世到来，这种追求自然的风潮戛然而止。到了两宋时期，沈括，杨辉，秦九韶，贾宪分别提出了很多代数学的方法，很多都领先西方600年以上，可惜……没有如果。</p>
+<h2 id="3-欧洲文艺复兴到法国大革命"><a href="#3-欧洲文艺复兴到法国大革命" class="headerlink" title="3 欧洲文艺复兴到法国大革命"></a>3 欧洲文艺复兴到法国大革命</h2><p>到了15世纪，欧洲文艺复兴。几何学被应用到绘画中，产生了透视法。17世纪，牛顿在自己的笔记本上记录了自己发明的正流数术（微分）和负流数术（积分），然后给笔记本取名“废书”，大有马云“最后悔的事情就是创立阿里巴巴”的感觉。约翰伯努利发明了一种求微分的方法，但是当时没有发表，后来被学生洛必达收录在了自己的小书中，虽然注明了是自己的老师发明的方法，但是这个方法依旧被叫做“洛必达法则”。看到这里，我的内心独白就是“请问这是什么神仙操作？”后来法国逐渐成为欧洲的数学和文学中心。哈密顿13岁的时候就已经掌握了13门语言，正当他想把汉语作为第14门语言时，父母双亡，于是在一个朋友带领下学数学去了。最值得一说的是黎曼，他打破了过去欧式几何的绝对正统而创立了非欧几何，为后来的理论物理和新时空观的建立打下了基础。与此同时，受相同的思潮影响，爱伦坡和博德莱尔打破了浪漫派诗人的绝对统治，创立了现代主义文学。</p>
+<h2 id="4-二十世纪后"><a href="#4-二十世纪后" class="headerlink" title="4 二十世纪后"></a>4 二十世纪后</h2><p>20世纪后，数学走向抽象化和公理化。与此同时，艺术也开始变得抽象。塞尚，梵高等等一系列名字，大家一定不陌生，这二者之间如果完全没有联系是说不过去的。截至目前，数学依旧在激烈地分化着，未来究竟会把人们带向何方，尚未可知。不过可以确定的是某种思潮的建立肯定会分化出新的艺术流派。</p>
+<p>读完这本“简史”，除了一小部分的惊叹和惋惜之外，其实更多的是理解与期待。经常有人把中西的数学发展对立起来，甚至完全否认中国古代曾经有过“数学”，或者认为其不值得的一提。通过这本小书，其实会发现上面的观点完全错误，因为中国古代有很多数学发现早于西方几百年。但是不得不说，中国的数学更多地叫“算学”，是以实际的“计算”来作为源动力而很少主动去探究其内涵的。比如祖冲之计算圆周率的目的就是为了更准确地计算闰年的历法。这些与其说是中西差异，不如说是不同历史人文背景下的人在不同历史时期的表现不同。</p>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/02/23/burn-cpu-calories-2/" rel="next" title="Burn CPU's Calories (2)">
+                <i class="fa fa-chevron-left"></i> Burn CPU's Calories (2)
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/05/05/burn-gpu-calorie-3/" rel="prev" title="Burn GPU's Calories (3)">
+                Burn GPU's Calories (3) <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+      </div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Feilin Jia</p>
+              <div class="site-description motion-element" itemprop="description">Note on computing, IT, education, etc.</div>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">14</span>
+                    <span class="site-state-item-name">posts</span>
+                  </a>
+                </div>
+              
+
+              
+
+              
+            </nav>
+          
+
+          
+
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-数学的起源到希腊文明"><span class="nav-number">1.</span> <span class="nav-text">1 数学的起源到希腊文明</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-中国（先秦到宋元）"><span class="nav-number">2.</span> <span class="nav-text">2 中国（先秦到宋元）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-欧洲文艺复兴到法国大革命"><span class="nav-number">3.</span> <span class="nav-text">3 欧洲文艺复兴到法国大革命</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-二十世纪后"><span class="nav-number">4.</span> <span class="nav-text">4 二十世纪后</span></a></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+  
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Feilin Jia</span>
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    
+      <span class="post-meta-item-text">Symbols count total: </span>
+    
+    <span title="Symbols count total">96k</span>
+  
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    
+      <span class="post-meta-item-text">Reading time total &asymp;</span>
+    
+    <span title="Reading time total">1:27</span>
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> v3.9.0</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> v7.0.1</div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-user"></i>
+    </span>
+    <span class="site-uv" title="Total Visitors">
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+    </span>
+  
+
+  
+    <span class="post-meta-divider">|</span>
+  
+
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-eye"></i>
+    </span>
+    <span class="site-pv" title="Total Views">
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+
+  
+
+
+  <script src="/js/src/utils.js?v=7.0.1"></script>
+
+  <script src="/js/src/motion.js?v=7.0.1"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/src/affix.js?v=7.0.1"></script>
+
+  <script src="/js/src/schemes/pisces.js?v=7.0.1"></script>
+
+
+
+  
+  <script src="/js/src/scrollspy.js?v=7.0.1"></script>
+<script src="/js/src/post-details.js?v=7.0.1"></script>
+
+
+
+  
+
+
+  <script src="/js/src/next-boot.js?v=7.0.1"></script>
+
+
+  
+
+  
+
+  
+
+  
+  
+  <script id="dsq-count-scr" src="https://feilinx.disqus.com/count.js" async></script>
+
+
+<script>
+  var disqus_config = function() {
+    this.page.url = "http://feilinx.com/2019/03/04/math-human-civilization/";
+    this.page.identifier = "2019/03/04/math-human-civilization/";
+    this.page.title = '《数学与人类文明》Note';
+    };
+  function loadComments() {
+    var d = document, s = d.createElement('script');
+    s.src = 'https://feilinx.disqus.com/embed.js';
+    s.setAttribute('data-timestamp', '' + +new Date());
+    (d.head || d.body).appendChild(s);
+  }
+  
+    loadComments();
+  
+</script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({"tex2jax":{"inlineMath":[["$","$"],["\\(","\\)"]],"skipTags":["script","noscript","style","textarea","pre","code"],"processEscapes":true},"TeX":{"equationNumbers":{"autoNumber":"AMS"}}});
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+  
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

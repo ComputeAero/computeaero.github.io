@@ -1,0 +1,986 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="en">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2">
+
+<link rel="stylesheet" href="/css/main.css?v=7.0.1">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.0.1">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.0.1">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.0.1">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=7.0.1" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '7.0.1',
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false,"dimmer":false},
+    back2top: true,
+    back2top_sidebar: false,
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="这篇博客有关一本C语言书《征服C指针》，作者是日本软件工程师Maebasi Kazuya（前桥和弥）。这不是一本有关C语言的完全指南，但是是一本用来厘清少量看上去很基础但是确实很重要概念的书，比如指针，数组，字符串，内存等等。作者不是像大部分教科书那样把所有的要点一一罗列，而是他逐步提出了几个让自己疑惑的问题，然后逐一解答。我觉得，对于每一位程序设计师，即便不用C语言,这是一本非常有价值，而且让人">
+<meta property="og:type" content="article">
+<meta property="og:title" content="有关C和指针">
+<meta property="og:url" content="http://feilinx.com/2017/12/10/c-pointer-cn/index.html">
+<meta property="og:site_name" content="Feilin Blog">
+<meta property="og:description" content="这篇博客有关一本C语言书《征服C指针》，作者是日本软件工程师Maebasi Kazuya（前桥和弥）。这不是一本有关C语言的完全指南，但是是一本用来厘清少量看上去很基础但是确实很重要概念的书，比如指针，数组，字符串，内存等等。作者不是像大部分教科书那样把所有的要点一一罗列，而是他逐步提出了几个让自己疑惑的问题，然后逐一解答。我觉得，对于每一位程序设计师，即便不用C语言,这是一本非常有价值，而且让人">
+<meta property="og:locale" content="en">
+<meta property="og:image" content="http://feilinx.com/images/memory_cn.png">
+<meta property="og:updated_time" content="2020-01-18T18:38:29.268Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="有关C和指针">
+<meta name="twitter:description" content="这篇博客有关一本C语言书《征服C指针》，作者是日本软件工程师Maebasi Kazuya（前桥和弥）。这不是一本有关C语言的完全指南，但是是一本用来厘清少量看上去很基础但是确实很重要概念的书，比如指针，数组，字符串，内存等等。作者不是像大部分教科书那样把所有的要点一一罗列，而是他逐步提出了几个让自己疑惑的问题，然后逐一解答。我觉得，对于每一位程序设计师，即便不用C语言,这是一本非常有价值，而且让人">
+<meta name="twitter:image" content="http://feilinx.com/images/memory_cn.png">
+
+
+
+
+
+
+  <link rel="canonical" href="http://feilinx.com/2017/12/10/c-pointer-cn/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>有关C和指针 | Feilin Blog</title>
+  
+
+
+
+
+  <script async src="//www.googletagmanager.com/gtag/js?id=UA-101617499-2"></script>
+  <script>
+    var host = window.location.hostname;
+    if (host !== "localhost" || !true) {
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-101617499-2');
+    }
+  </script>
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+  
+    
+  
+
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Feilin Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="Toggle navigation bar">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>Home</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>Archives</a>
+
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://feilinx.com/2017/12/10/c-pointer-cn/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Feilin Jia">
+      <meta itemprop="description" content="Note on computing, IT, education, etc.">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Feilin Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">有关C和指针
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+
+              
+                
+              
+
+              <time title="Created: 2017-12-09 23:21:17" itemprop="dateCreated datePublished" datetime="2017-12-09T23:21:17-06:00">2017-12-09</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Edited on</span>
+                
+                <time title="Modified: 2020-01-18 12:38:29" itemprop="dateModified" datetime="2020-01-18T12:38:29-06:00">2020-01-18</time>
+              
+            
+          </span>
+
+          
+
+          
+            
+            
+              
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+            
+                <span class="post-meta-item-text">Comments: </span>
+                <a href="/2017/12/10/c-pointer-cn/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2017/12/10/c-pointer-cn/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="post-meta-item-icon">
+            <i class="fa fa-eye"></i>
+             Views:  
+            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+            </span>
+          
+
+          
+            <div class="post-symbolscount">
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Symbols count in article: </span>
+                
+                <span title="Symbols count in article">16k</span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Reading time &asymp;</span>
+                
+                <span title="Reading time">15 mins.</span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>这篇博客有关一本C语言书《征服C指针》，作者是日本软件工程师<a href="https://www.amazon.com/Kazuya-Maebasi/e/B004LT29A0" target="_blank" rel="noopener">Maebasi Kazuya</a>（前桥和弥）。这不是一本有关C语言的完全指南，但是是一本用来厘清少量看上去很基础但是确实很重要概念的书，比如指针，数组，字符串，内存等等。作者不是像大部分教科书那样把所有的要点一一罗列，而是他逐步提出了几个让自己疑惑的问题，然后逐一解答。我觉得，对于每一位程序设计师，即便不用C语言,这是一本非常有价值，而且让人大开眼界的书，因为很多概念与语言无关。在解释某些概念时，会展示一些代码，读者可以跳转到<a href="https://www.onlinegdb.com/" target="_blank" rel="noopener">onlinegdb.com</a>进行现场的实践. 这个网站的好处是可以在线用gdb调试简单程序。</p>
+<p>在正式开始之前，有3句话是本博客<strong>最想说的</strong>：<br><blockquote><p>1、当你遇到某种奇怪的语法的时候，不要试图寻找某种方式或者某个角度去理解以达到使其显得更加自然的目的，直接记住就好，因为c语言本身就是奇怪的，不自然的。<br>2、数组不等于指针。<br>3、经常听人们说“字符串常量”，但是字符串有时候还真不是常量，是变量。</p>
+</blockquote><br><a id="more"></a></p>
+<h2 id="1-指针"><a href="#1-指针" class="headerlink" title="1 指针"></a>1 指针</h2><ul>
+<li><p>当我们谈论指针的时候，我们在谈论什么？答：不知道。<br>很多时候，我们经常听到有人说“这个指针怎么样怎么样”，但是我们需要先确定一下，指针是一个数据类型，但它不是基本数据类型(int, double, char…)，而是派生数据类型。就像其他基本数据类型的变量一样，指针数据类型的变量也是有变量名，变量的内容，以及变量在内存中存在的地址等信息。当我们谈论指针的时候，最好需要搞明白我们谈论的是指针类型的变量还是指针类型的值？这个很重要，牵扯到很多概念，比如左值、右值。</p>
+</li>
+<li><p>指针变量声明时，指针类型包不包含星号？答：很难说，因为有矛盾。<br>其实指针在一开始就有一个坑，那就是指针变量的声明：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span>* p;</span><br></pre></td></tr></table></figure>
+<p>这句代码声明了一个指向int数据类型的指针变量p, 其中“指向int的指针类型”用int*表示，也就是说int和*是整体，但是当在一行声明多个指针的时候，只能写成</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> *p1, *p2, *p3;</span><br></pre></td></tr></table></figure>
+<p>这个时候*跟变量名又变成了整体，这个规定很不自然。</p>
+</li>
+<li><p>既然指针变量保存的是内存地址，对于64位计算机，也就是8个byte的“门牌号”，那为什么还要区分指向int的指针和指向char的指针？他们不一样吗？<br>答：不一样，因为要照顾到指针运算。<br>第一，如果在表达式中，一个指针变量前加一个*，代表解引用，也就是取出这个指针指向的数据。如果指针对指向的数据类型不作区分，那么当面对一堆0，1时，计算机不知道要读几位, 无法正确地按照格式取出数据。注意，这里面又有一个坑，那就是表达式中的*代表取出指针所指向的数据内容，跟在声明中的*的意义是不一样的。<br>第二，指针加法运算。对指针+1，意味着得到一个新的地址，这个地址可不是原地址+1，而是原来指针的地址加上被指数据类型的大小。如果不限定类型，就不知道地址要移动几位. 当然，有的人可能会质疑，因为C语言中有void*指针，并没有限定数据类型，就是一个单纯的地址，那如果+1会移动几位？加1位。为了解答，看下面的例子比如</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span>  a = <span class="number">1</span>;</span><br><span class="line"><span class="keyword">char</span> b = <span class="string">'x'</span>;</span><br><span class="line"><span class="keyword">int</span> <span class="built_in">array</span>[<span class="number">3</span>];</span><br><span class="line"><span class="keyword">int</span>* p_a = &amp;a;</span><br><span class="line"><span class="keyword">char</span>* p_b = &amp;b;</span><br><span class="line"><span class="keyword">void</span> *p_c = &amp;a;</span><br><span class="line"><span class="keyword">int</span> (*p_array)[<span class="number">3</span>];</span><br><span class="line">p_array = &amp;<span class="built_in">array</span>;</span><br><span class="line"></span><br><span class="line"><span class="built_in">printf</span>(<span class="string">"The value of p_a   is %p.\n"</span>, p_a);</span><br><span class="line"><span class="built_in">printf</span>(<span class="string">"The value of p_a+1 is %p.\n"</span>, p_a+<span class="number">1</span>);</span><br><span class="line"><span class="built_in">printf</span>(<span class="string">"The value of p_b   is %p.\n"</span>, p_b);</span><br><span class="line"><span class="built_in">printf</span>(<span class="string">"The value of p_b+1 is %p.\n"</span>, p_b+<span class="number">1</span>);</span><br><span class="line"><span class="built_in">printf</span>(<span class="string">"The value of p_c   is %p.\n"</span>, p_c);</span><br><span class="line"><span class="built_in">printf</span>(<span class="string">"The value of p_c+1 is %p.\n"</span>, p_c+<span class="number">1</span>);</span><br><span class="line"><span class="built_in">printf</span>(<span class="string">"The value of p_array   is %p.\n"</span>, p_array);</span><br><span class="line"><span class="built_in">printf</span>(<span class="string">"The value of p_array+1 is %p.\n"</span>, p_array+<span class="number">1</span>);</span><br></pre></td></tr></table></figure>
+
+<p style="background-color: #000000; color: #00FF00">
+The value of p_a   is 0x7ffc3122139c.<br>
+The value of p_a+1 is 0x7ffc312213a0.<br>
+The value of p_b   is 0x7ffc3122139b.<br>
+The value of p_b+1 is 0x7ffc3122139c.<br>
+The value of p_c   is 0x7ffc3122139c.<br>
+The value of p_c+1 is 0x7ffc3122139d.<br>
+The value of p_array   is 0x7ffc312213a0.<br>
+The value of p_array+1 is 0x7ffc312213ac.<br>
+</p>
+
+<p>int指针前进了4个字节，char和void指针都前进了1个。int[3]指针前进了12个字节。有关数组的指针，也是很容易弄错的，后面会详细讲。</p>
+</li>
+</ul>
+<h2 id="2-数组"><a href="#2-数组" class="headerlink" title="2 数组"></a>2 数组</h2><p>像int, char, double等等，都是scalar，但是数组不是，而是聚合类型(aggregate)。</p>
+<ul>
+<li>在读取数组是,方括号跟数组没有任何关系。在读取数组的时候p[i]仅仅是*(p+i)的语法糖，写成i[p]也是可以的<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> <span class="built_in">array</span>[<span class="number">3</span>]=&#123;<span class="number">10</span>,<span class="number">20</span>,<span class="number">30</span>&#125;;;</span><br><span class="line"><span class="built_in">printf</span>(<span class="string">"The array[1] is %d.\n"</span>, <span class="built_in">array</span>[<span class="number">1</span>]);</span><br><span class="line"><span class="built_in">printf</span>(<span class="string">"The *(array+1) is %d.\n"</span>, *(<span class="built_in">array</span>+<span class="number">1</span>));</span><br><span class="line"><span class="built_in">printf</span>(<span class="string">"The 1[array] is %d.\n"</span>, <span class="number">1</span>[<span class="built_in">array</span>]);</span><br></pre></td></tr></table></figure>
+
+<p style="background-color: #000000; color: #00FF00">
+The array[1] is 20.<br>
+The *(array+1) is 20.<br>
+The 1[array] is 20.<br>
+</p>
+
+<blockquote><p>比i[array]==array[i]更重要的是不要写i[array]，这不是人类的理解方式…</p>
+</blockquote>
+</li>
+</ul>
+<h2 id="3-数组可以当作指针来使用的情况（数组不等于指针）"><a href="#3-数组可以当作指针来使用的情况（数组不等于指针）" class="headerlink" title="3 数组可以当作指针来使用的情况（数组不等于指针）"></a>3 数组可以当作指针来使用的情况（数组不等于指针）</h2><p>虽然数组是聚合类型,而指针是标量, 但是他们有很多相似之处. 经常会发现数组跟指针很像，这是有道理的。</p>
+<ul>
+<li>当我们在谈论“数组等于指针”的时候，我们在谈论什么？答：数组变量名其实就是“指向该数组第一个元素的地址”的指针。<br>比如在声明函数形参的时候，[ ]与*等价。<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">function</span><span class="params">(<span class="keyword">int</span> *p)</span></span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">function</span><span class="params">(<span class="keyword">int</span> p[])</span></span></span><br></pre></td></tr></table></figure>
+但是数组变量名并不是指向自己(数组)的指针, 只有数组名前面加&amp;，才是指向该数组的指针，如下例:<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> <span class="built_in">array</span>[<span class="number">3</span>];</span><br><span class="line"><span class="keyword">int</span> *p_1;</span><br><span class="line"><span class="keyword">int</span> (*p_2)[<span class="number">3</span>];</span><br><span class="line">p_1 = <span class="built_in">array</span>; <span class="comment">//correct</span></span><br><span class="line">p_1 = &amp;<span class="built_in">array</span>; <span class="comment">// wrong, assign a int*[3] to int*</span></span><br><span class="line">p_2 = <span class="built_in">array</span>; <span class="comment">// wrong, assign a int* to int*[3]</span></span><br><span class="line">p_2 = &amp;<span class="built_in">array</span>; <span class="comment">// correct</span></span><br></pre></td></tr></table></figure>
+注：由于某些原因，onlinegdb.com居然没有报错，但是在其他任何平台都会报错。也就是说数组跟指针有如下关系：<blockquote><p>1 在<strong>表达式</strong>中, <strong>当作右值使用时</strong>，数组名其实就是指向其第一个元素的指针（什么叫右值？看书就明白了。）<br>2 数组名前加&amp;是指向数组这个整体的指针，此时这个指针指向的已经不再是基本类型，而是聚合类型</p>
+</blockquote>
+</li>
+</ul>
+<h2 id="4-数组不等于指针"><a href="#4-数组不等于指针" class="headerlink" title="4 数组不等于指针"></a>4 数组不等于指针</h2><ul>
+<li><p>有没有一个好的例子来证明这句话？答：有，看所占空间的大小。<br>我们知道，数组的大小应该是元素的个数乘以每个元素的大小，但是指针的大小在某台固定的机器上是一样的，比如32位机器应该是4个byte，64位机器应该是8个byte，例子证明</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> a;</span><br><span class="line"><span class="keyword">int</span> *p;</span><br><span class="line"><span class="keyword">int</span> <span class="built_in">array</span>[<span class="number">10</span>];</span><br><span class="line"><span class="keyword">int</span> *array_p = <span class="built_in">array</span>;</span><br><span class="line"><span class="keyword">int</span> *array_of_pointer[<span class="number">10</span>];</span><br><span class="line"><span class="keyword">int</span> array2d[<span class="number">2</span>][<span class="number">3</span>];</span><br><span class="line"><span class="built_in">printf</span>(<span class="string">"The size of a is %d.\n"</span>, <span class="keyword">sizeof</span>(a));</span><br><span class="line"><span class="built_in">printf</span>(<span class="string">"The size of p is %d.\n"</span>, <span class="keyword">sizeof</span>(p));</span><br><span class="line"><span class="built_in">printf</span>(<span class="string">"The size of array is %d.\n"</span>, <span class="keyword">sizeof</span>(<span class="built_in">array</span>));</span><br><span class="line"><span class="built_in">printf</span>(<span class="string">"The size of array_p is %d.\n"</span>, <span class="keyword">sizeof</span>(array_p));</span><br><span class="line"><span class="built_in">printf</span>(<span class="string">"The size of array_of_pointer is %d.\n"</span>, <span class="keyword">sizeof</span>(array_of_pointer));</span><br><span class="line"><span class="built_in">printf</span>(<span class="string">"The size of array2d is %d.\n"</span>, <span class="keyword">sizeof</span>(array2d));</span><br></pre></td></tr></table></figure>
+
+<p style="background-color: #000000; color: #00FF00">
+The size of a is 4.<br>
+The size of p is 8.<br>
+The size of array is 40.<br>
+The size of array_p is 8.<br>
+The size of array_of_pointer is 80.<br>
+The size of array2d is 24.<br>
+</p>
+
+<p>发现int占4个字节，地址(64位计算机)占8个字节，array数组占10x4=40个字节，array_of_pointer占10x8=80个字节，array2d占2x3x4=24个字节</p>
+</li>
+<li><p>除了上面这个大小的问题，还有哪些不同？答：至少在字符串方面很不一样。<br>对于字符串，也有数组与指针的不同。字符串的本质是char的数组，而不是指向char的指针，下面代码可以验证这一点：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">printf</span>(<span class="string">"The size is %d.\n"</span>, <span class="keyword">sizeof</span>(<span class="string">"Felix"</span>));</span><br></pre></td></tr></table></figure>
+
+<p style="background-color: #000000; color: #00FF00">
+The size is 6.
+</p>  
+
+<p>大小是6，因为字符串在末尾加了’\0’。如果字符串本质是指向char的指针，那大小应该是8。<br>但是接下来的问题非常confusing</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">char</span> *str</span><br><span class="line">str=”abc”; </span><br></pre></td></tr></table></figure>
+<p>char的数组在表达式中解读为指针，所以=左右两边都是指针，这是一个普通的指针的赋值，是合法的。<br>但是</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">char</span> str[<span class="number">4</span>];</span><br><span class="line">str = “abc”;</span><br></pre></td></tr></table></figure>
+<p>是非法的，因为str是数组，当它出现在=左边的时候，是当作左值使用，只有作右值时才可以看成指针，此时str不能看作指针，所以无法接受”abc”的赋值。但是，一个例外就是初始化！初始化不同于普通的赋值操作</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">char</span> str[<span class="number">4</span>] = “abc”；</span><br></pre></td></tr></table></figure>
+<p>是合法的。<br>也就是说，目前我们掌握了两种声明字符串的方法，一种是用指针，一种是用数组。又回到了我们的中心问题：数组跟指针有啥区别？这两种方法有什么不同吗？答案就是：一个是字符串常量，不能修改，一个是字符串变量，可以修改。因为这两种方式定义出来的字符串在内存中存放的位置完全不同。如下</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">char</span> *str1 = <span class="string">"abc"</span>;</span><br><span class="line">str1[<span class="number">0</span>] = <span class="string">'w'</span>;</span><br></pre></td></tr></table></figure>
+
+<p style="background-color: #000000; color: #00FF00">
+Segmentation fault.
+</p>
+
+<p>但是，如果用数组来保存字符串，就会变得可以修改。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">char</span> *str1 = <span class="string">"abc"</span>;</span><br><span class="line"><span class="built_in">printf</span>(<span class="string">"The address of \"abc\" is %p.\n"</span>, str1);</span><br><span class="line"></span><br><span class="line"><span class="keyword">char</span> str2[] = <span class="string">"def"</span>;</span><br><span class="line"><span class="built_in">printf</span>(<span class="string">"The address of \"def\" is %p.\n"</span>, str2);</span><br><span class="line">str2[<span class="number">0</span>] = <span class="string">'w'</span>;</span><br><span class="line"><span class="built_in">printf</span>(<span class="string">"The str2 is %s.\n"</span>, str2);</span><br></pre></td></tr></table></figure>
+
+<p style="background-color: #000000; color: #00FF00">
+The address of "abc" is 0x400ab4.<br>
+The address of "def" is 0x7ffc6960c770.<br>
+The str2 is wef.<br>
+</p>
+
+<p>从上面的例子发现，”abc”的地址很小，而”def”的地址很大，这其实就预示着它们保存在了内存中的不同区域，一个仅仅只读，另一个却可以修改。那为什么地址小就无法修改，地址大就可以修改？请看下一段。</p>
+</li>
+</ul>
+<h2 id="5-内存相关"><a href="#5-内存相关" class="headerlink" title="5 内存相关"></a>5 内存相关</h2><p>事实上，在c语言执行的过程中，信息需要保存在内存中，包括函数，调用信息，各种变量等等，它们的存放顺序是<br><img src="/images/memory_cn.png" alt="Memory_overview"><br>字符串常量被放在了跟函数自身相同的区域，也就是不能修改的。上面的例子中，当用指针来接受一个字符串的赋值之前，事实上该字符串已经以常量的形式保存在了跟函数自身相同的内存区域里，而通过数组来初始化字符串的时候，该字符串保存在了自动变量的区域，所以是可以修改的。</p>
+<p>想看就请购买吧，如果不在中国，也有kindle电子版：(<a href="http://www.ituring.com.cn/book/1036" target="_blank" rel="noopener">去买书</a>)</p>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/12/08/c-pointer-20171209/" rel="next" title="About C and Pointer">
+                <i class="fa fa-chevron-left"></i> About C and Pointer
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/04/05/mpi-1/" rel="prev" title="My Q&A on MPI (1)">
+                My Q&A on MPI (1) <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+      </div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Feilin Jia</p>
+              <div class="site-description motion-element" itemprop="description">Note on computing, IT, education, etc.</div>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">14</span>
+                    <span class="site-state-item-name">posts</span>
+                  </a>
+                </div>
+              
+
+              
+
+              
+            </nav>
+          
+
+          
+
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-指针"><span class="nav-number">1.</span> <span class="nav-text">1 指针</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-数组"><span class="nav-number">2.</span> <span class="nav-text">2 数组</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-数组可以当作指针来使用的情况（数组不等于指针）"><span class="nav-number">3.</span> <span class="nav-text">3 数组可以当作指针来使用的情况（数组不等于指针）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-数组不等于指针"><span class="nav-number">4.</span> <span class="nav-text">4 数组不等于指针</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-内存相关"><span class="nav-number">5.</span> <span class="nav-text">5 内存相关</span></a></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+  
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Feilin Jia</span>
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    
+      <span class="post-meta-item-text">Symbols count total: </span>
+    
+    <span title="Symbols count total">96k</span>
+  
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    
+      <span class="post-meta-item-text">Reading time total &asymp;</span>
+    
+    <span title="Reading time total">1:27</span>
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> v3.9.0</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> v7.0.1</div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-user"></i>
+    </span>
+    <span class="site-uv" title="Total Visitors">
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+    </span>
+  
+
+  
+    <span class="post-meta-divider">|</span>
+  
+
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-eye"></i>
+    </span>
+    <span class="site-pv" title="Total Views">
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+
+  
+
+
+  <script src="/js/src/utils.js?v=7.0.1"></script>
+
+  <script src="/js/src/motion.js?v=7.0.1"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/src/affix.js?v=7.0.1"></script>
+
+  <script src="/js/src/schemes/pisces.js?v=7.0.1"></script>
+
+
+
+  
+  <script src="/js/src/scrollspy.js?v=7.0.1"></script>
+<script src="/js/src/post-details.js?v=7.0.1"></script>
+
+
+
+  
+
+
+  <script src="/js/src/next-boot.js?v=7.0.1"></script>
+
+
+  
+
+  
+
+  
+
+  
+  
+  <script id="dsq-count-scr" src="https://feilinx.disqus.com/count.js" async></script>
+
+
+<script>
+  var disqus_config = function() {
+    this.page.url = "http://feilinx.com/2017/12/10/c-pointer-cn/";
+    this.page.identifier = "2017/12/10/c-pointer-cn/";
+    this.page.title = '有关C和指针';
+    };
+  function loadComments() {
+    var d = document, s = d.createElement('script');
+    s.src = 'https://feilinx.disqus.com/embed.js';
+    s.setAttribute('data-timestamp', '' + +new Date());
+    (d.head || d.body).appendChild(s);
+  }
+  
+    loadComments();
+  
+</script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({"tex2jax":{"inlineMath":[["$","$"],["\\(","\\)"]],"skipTags":["script","noscript","style","textarea","pre","code"],"processEscapes":true},"TeX":{"equationNumbers":{"autoNumber":"AMS"}}});
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+  
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

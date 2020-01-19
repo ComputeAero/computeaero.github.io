@@ -1,0 +1,984 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="en">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2">
+
+<link rel="stylesheet" href="/css/main.css?v=7.0.1">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.0.1">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.0.1">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.0.1">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=7.0.1" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '7.0.1',
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false,"dimmer":false},
+    back2top: true,
+    back2top_sidebar: false,
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="This blog is about the Chinese translation of a good C language book named “征服c指针“ by a Japanese programmer Maebasi Kazuya. I found it is far from a complete guide for C, but a very good book clarifyi">
+<meta property="og:type" content="article">
+<meta property="og:title" content="About C and Pointer">
+<meta property="og:url" content="http://feilinx.com/2017/12/08/c-pointer-20171209/index.html">
+<meta property="og:site_name" content="Feilin Blog">
+<meta property="og:description" content="This blog is about the Chinese translation of a good C language book named “征服c指针“ by a Japanese programmer Maebasi Kazuya. I found it is far from a complete guide for C, but a very good book clarifyi">
+<meta property="og:locale" content="en">
+<meta property="og:image" content="http://feilinx.com/images/memory_en.png">
+<meta property="og:updated_time" content="2020-01-18T18:38:29.264Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="About C and Pointer">
+<meta name="twitter:description" content="This blog is about the Chinese translation of a good C language book named “征服c指针“ by a Japanese programmer Maebasi Kazuya. I found it is far from a complete guide for C, but a very good book clarifyi">
+<meta name="twitter:image" content="http://feilinx.com/images/memory_en.png">
+
+
+
+
+
+
+  <link rel="canonical" href="http://feilinx.com/2017/12/08/c-pointer-20171209/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>About C and Pointer | Feilin Blog</title>
+  
+
+
+
+
+  <script async src="//www.googletagmanager.com/gtag/js?id=UA-101617499-2"></script>
+  <script>
+    var host = window.location.hostname;
+    if (host !== "localhost" || !true) {
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-101617499-2');
+    }
+  </script>
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+  
+    
+  
+
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Feilin Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="Toggle navigation bar">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>Home</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>Archives</a>
+
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://feilinx.com/2017/12/08/c-pointer-20171209/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Feilin Jia">
+      <meta itemprop="description" content="Note on computing, IT, education, etc.">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Feilin Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">About C and Pointer
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+
+              
+                
+              
+
+              <time title="Created: 2017-12-08 22:52:10" itemprop="dateCreated datePublished" datetime="2017-12-08T22:52:10-06:00">2017-12-08</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Edited on</span>
+                
+                <time title="Modified: 2020-01-18 12:38:29" itemprop="dateModified" datetime="2020-01-18T12:38:29-06:00">2020-01-18</time>
+              
+            
+          </span>
+
+          
+
+          
+            
+            
+              
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+            
+                <span class="post-meta-item-text">Comments: </span>
+                <a href="/2017/12/08/c-pointer-20171209/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2017/12/08/c-pointer-20171209/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="post-meta-item-icon">
+            <i class="fa fa-eye"></i>
+             Views:  
+            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+            </span>
+          
+
+          
+            <div class="post-symbolscount">
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Symbols count in article: </span>
+                
+                <span title="Symbols count in article">21k</span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Reading time &asymp;</span>
+                
+                <span title="Reading time">19 mins.</span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>This blog is about the Chinese translation of a good C language book named “<a href="https://book.douban.com/subject/21317828/" target="_blank" rel="noopener">征服c指针</a>“ by a Japanese programmer <a href="https://www.amazon.com/Kazuya-Maebasi/e/B004LT29A0" target="_blank" rel="noopener">Maebasi Kazuya</a>. I found it is far from a complete guide for C, but a very good book clarifying some seemly basic but extremely important concepts, e.g. array, pointer, string, memory etc. The author didn’t just list the knowledge one by one in the style which most textbooks did. Instead, he divided into several problems which made him feel confused and then give the solutions. It is a very valuable supplementary and eye-opening book for every programmer. In this blog, I will show some code to illustrate some concepts. Readers can go to <a href="https://www.onlinegdb.com/" target="_blank" rel="noopener">onlinegdb.com</a> to practice, which allows users to even debug online.</p>
+<p>Before we start, I have <strong>3 most important points</strong>:<br><blockquote><p>1 When you encounter some strange syntax in C, do not try to find some ways to explain to make the C more natural. Just remember that strange syntax, because C itself is strange indeed.<br>2 Array is not equivalent to pointer.<br>3 Many people talk about “constant string”, but sometimes, the string can be modified.</p>
+</blockquote><br><a id="more"></a></p>
+<h2 id="1-Pointer"><a href="#1-Pointer" class="headerlink" title="1 Pointer"></a>1 Pointer</h2><ul>
+<li><p>When we talk about pointers, what do we talk? Answer: I don’t know.<br>In many cases, we hear about many people say “This pointer is blablabla”, but we should confirm that pointer is a data type in C. Unlike the basic data type like int, char, double, etc, pointer is a derived data type. A variable with pointer type also has its name, value, location in memory and so on. It’s better to clarify what we are talking about, variable? value? or others? This is very important, because it has to do with many concepts, like left value and right value (refer the book to learn).</p>
+</li>
+<li><p>In declaration of a pointer variable, does the pointer type consist of the asterisk sign? Answer: Hard to say. It depends.<br>In fact, pointer has an issue at the beginning:</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span>* p;</span><br></pre></td></tr></table></figure>
+<p>The above line declares a pointer variable p pointing to int. “Pointer pointing to a int” is represented by int*. It means the int* acts as a whole thing. However, when you want to declare multiple pointers in one line, you have to deplicate the asterisk sign for each pointer variable.</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> *p1, *p2, *p3;</span><br></pre></td></tr></table></figure>
+<p>In this case, the * and variable name act as a whole thing. This syntax is not natural.</p>
+</li>
+<li><p>Because pointer stores the address in memory (8 bytes for 64-bit OS), why should we distinguish a pointer pointing to int and another pointer pointing to char? Are they different? Answer: For pointer operation.<br>First of all, in an expression, if a sterisk is added before a pointer, it means to retrieve the value of what it points to. If we do not tell how many bytes this pointer points to, it can not retrieve the value correctly when facing those 0 and 1 in memory.<br>Secondly, if we plus 1 to a pointer, we will get a new address. This new address is not simply add 1 to the address value. The size it will increase is equal to the size of the data type which it points to. Someone may ask how about void*? It does not assign any specific data type, how many bytes it will increase when +1? My test is it will increase 1 byte. See below</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span>  a = <span class="number">1</span>;</span><br><span class="line"><span class="keyword">char</span> b = <span class="string">'x'</span>;</span><br><span class="line"><span class="keyword">int</span> <span class="built_in">array</span>[<span class="number">3</span>];</span><br><span class="line"><span class="keyword">int</span>* p_a = &amp;a;</span><br><span class="line"><span class="keyword">char</span>* p_b = &amp;b;</span><br><span class="line"><span class="keyword">void</span> *p_c = &amp;a;</span><br><span class="line"><span class="keyword">int</span> (*p_array)[<span class="number">3</span>];</span><br><span class="line">p_array = &amp;<span class="built_in">array</span>;</span><br><span class="line"></span><br><span class="line"><span class="built_in">printf</span>(<span class="string">"The value of p_a   is %p.\n"</span>, p_a);</span><br><span class="line"><span class="built_in">printf</span>(<span class="string">"The value of p_a+1 is %p.\n"</span>, p_a+<span class="number">1</span>);</span><br><span class="line"><span class="built_in">printf</span>(<span class="string">"The value of p_b   is %p.\n"</span>, p_b);</span><br><span class="line"><span class="built_in">printf</span>(<span class="string">"The value of p_b+1 is %p.\n"</span>, p_b+<span class="number">1</span>);</span><br><span class="line"><span class="built_in">printf</span>(<span class="string">"The value of p_c   is %p.\n"</span>, p_c);</span><br><span class="line"><span class="built_in">printf</span>(<span class="string">"The value of p_c+1 is %p.\n"</span>, p_c+<span class="number">1</span>);</span><br><span class="line"><span class="built_in">printf</span>(<span class="string">"The value of p_array   is %p.\n"</span>, p_array);</span><br><span class="line"><span class="built_in">printf</span>(<span class="string">"The value of p_array+1 is %p.\n"</span>, p_array+<span class="number">1</span>);</span><br></pre></td></tr></table></figure>
+
+<p style="background-color: #000000; color: #00FF00">
+The value of p_a   is 0x7ffc3122139c.<br>
+The value of p_a+1 is 0x7ffc312213a0.<br>
+The value of p_b   is 0x7ffc3122139b.<br>
+The value of p_b+1 is 0x7ffc3122139c.<br>
+The value of p_c   is 0x7ffc3122139c.<br>
+The value of p_c+1 is 0x7ffc3122139d.<br>
+The value of p_array   is 0x7ffc312213a0.<br>
+The value of p_array+1 is 0x7ffc312213ac.<br>
+</p>
+
+<p>The pointer to int increases 4 bytes, while the pointers to char and void increase 1 byte respectively. The pointer to int[3] increases 12 bytes, because the size of int[3] is equal to 12, which will be explained later.</p>
+</li>
+</ul>
+<h2 id="2-Array"><a href="#2-Array" class="headerlink" title="2 Array"></a>2 Array</h2><p>Like int, char, double, etc, they are scalar and basic type, but array is not. Array is an aggregate and derived data type.</p>
+<ul>
+<li>When reading in arrays, the square brackets have nothing to do with the array concept. It is just a syntax sugar to pointer. p[i] is just a syntax sugar of *(p+i), which can also be written as *(i+p) or i[p].<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> <span class="built_in">array</span>[<span class="number">3</span>]=&#123;<span class="number">10</span>,<span class="number">20</span>,<span class="number">30</span>&#125;;;</span><br><span class="line"><span class="built_in">printf</span>(<span class="string">"The array[1] is %d.\n"</span>, <span class="built_in">array</span>[<span class="number">1</span>]);</span><br><span class="line"><span class="built_in">printf</span>(<span class="string">"The *(array+1) is %d.\n"</span>, *(<span class="built_in">array</span>+<span class="number">1</span>));</span><br><span class="line"><span class="built_in">printf</span>(<span class="string">"The 1[array] is %d.\n"</span>, <span class="number">1</span>[<span class="built_in">array</span>]);</span><br></pre></td></tr></table></figure>
+
+<p style="background-color: #000000; color: #00FF00">
+The array[1] is 20.<br>
+The *(array+1) is 20.<br>
+The 1[array] is 20.<br>
+</p>
+
+<blockquote><p>What is more important than i[array]==array[i] is do not write this line.</p>
+</blockquote>
+</li>
+</ul>
+<h2 id="3-Array-is-used-as-pointer-in-some-cases（array-is-not-pointer）"><a href="#3-Array-is-used-as-pointer-in-some-cases（array-is-not-pointer）" class="headerlink" title="3 Array is used as pointer in some cases（array is not pointer）"></a>3 Array is used as pointer in some cases（array is not pointer）</h2><p>Although array is aggregate, while pointer is a scalar, but in many cases, they are pretty similar.</p>
+<ul>
+<li>When we talk about “Array is equal to pointer”, what do we talk? Answer: The name of the array is actually the pointer pointing to it’s first element in some situations.</li>
+</ul>
+<p>For example, in the dummy parameters of a function, [ ] is equivalent to *.<br><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">function</span><span class="params">(<span class="keyword">int</span> *p)</span></span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">function</span><span class="params">(<span class="keyword">int</span> p[])</span></span></span><br></pre></td></tr></table></figure><br>If you want to get a pointer pointing to the entire array, we need to use &amp;array, see below<br><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> <span class="built_in">array</span>[<span class="number">3</span>];</span><br><span class="line"><span class="keyword">int</span> *p_1;</span><br><span class="line"><span class="keyword">int</span> (*p_2)[<span class="number">3</span>];</span><br><span class="line">p_1 = <span class="built_in">array</span>; <span class="comment">//correct</span></span><br><span class="line">p_1 = &amp;<span class="built_in">array</span>; <span class="comment">// wrong, assign a int*[3] to int*</span></span><br><span class="line">p_2 = <span class="built_in">array</span>; <span class="comment">// wrong, assign a int* to int*[3]</span></span><br><span class="line">p_2 = &amp;<span class="built_in">array</span>; <span class="comment">// correct</span></span><br></pre></td></tr></table></figure><br>Note： for some unknown reasons，onlinegdb.com does not report any errors for the above code. But all of other compilers will report the errors. Therefore, the relationship between array and pointer is<br><blockquote><p>1 In <strong>expression</strong>, <strong>used as right value</strong>, the name of the array is just a pointer pointing to its first element. (What is right value? Please refer to the book)<br>2 If we put &amp; before the name of the array, it becomes a pointer pointing to the entire array.</p>
+</blockquote></p>
+<h2 id="4-Array-is-not-equal-to-pointer"><a href="#4-Array-is-not-equal-to-pointer" class="headerlink" title="4 Array is not equal to pointer"></a>4 Array is not equal to pointer</h2><ul>
+<li><p>Is any good example for this? Answer: Yes, see the space it occupies.<br>We all know, the size of array is number of elements multiply the size of its each element. However, the size of pointer is fixed for a specific machine. For 32-bit machine, it is 4 bytes, while for 64-bit, it is 8 bytes. See below</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> a;</span><br><span class="line"><span class="keyword">int</span> *p;</span><br><span class="line"><span class="keyword">int</span> <span class="built_in">array</span>[<span class="number">10</span>];</span><br><span class="line"><span class="keyword">int</span> *array_p = <span class="built_in">array</span>;</span><br><span class="line"><span class="keyword">int</span> *array_of_pointer[<span class="number">10</span>];</span><br><span class="line"><span class="keyword">int</span> array2d[<span class="number">2</span>][<span class="number">3</span>];</span><br><span class="line"><span class="built_in">printf</span>(<span class="string">"The size of a is %d.\n"</span>, <span class="keyword">sizeof</span>(a));</span><br><span class="line"><span class="built_in">printf</span>(<span class="string">"The size of p is %d.\n"</span>, <span class="keyword">sizeof</span>(p));</span><br><span class="line"><span class="built_in">printf</span>(<span class="string">"The size of array is %d.\n"</span>, <span class="keyword">sizeof</span>(<span class="built_in">array</span>));</span><br><span class="line"><span class="built_in">printf</span>(<span class="string">"The size of array_p is %d.\n"</span>, <span class="keyword">sizeof</span>(array_p));</span><br><span class="line"><span class="built_in">printf</span>(<span class="string">"The size of array_of_pointer is %d.\n"</span>, <span class="keyword">sizeof</span>(array_of_pointer));</span><br><span class="line"><span class="built_in">printf</span>(<span class="string">"The size of array2d is %d.\n"</span>, <span class="keyword">sizeof</span>(array2d));</span><br></pre></td></tr></table></figure>
+
+<p style="background-color: #000000; color: #00FF00">
+The size of a is 4.<br>
+The size of p is 8.<br>
+The size of array is 40.<br>
+The size of array_p is 8.<br>
+The size of array_of_pointer is 80.<br>
+The size of array2d is 24.<br>
+</p>
+
+<p>int occupies 4 bytes，address occupies (64-bit machine) 8 bytes，array occupies 10<em>4=40 bytes, array_of_pointer occupies 10</em>8=80 bytes, and the 2D array occupies 2<em>3</em>4=24 bytes.</p>
+</li>
+<li><p>Except the above case, any other difference? Answer: At least for string, there are much difference also.<br>The essence of string is array of char, instead of pointer pointing to char. See below:</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">printf</span>(<span class="string">"The size is %d.\n"</span>, <span class="keyword">sizeof</span>(<span class="string">"Felix"</span>));</span><br></pre></td></tr></table></figure>
+
+<p style="background-color: #000000; color: #00FF00">
+The size is 6.
+</p>  
+
+<p>The size if 6, because it adds a ‘\0’ at the tail. If string is a pointer, the size should be 8.<br>However, the following issue is extremely confusing!</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">char</span> *str</span><br><span class="line">str=”abc”; </span><br></pre></td></tr></table></figure>
+<p>The array of char acts as a pointer in the expression, so both sides are pointers, it is legal.<br>But</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">char</span> str[<span class="number">4</span>];</span><br><span class="line">str = “abc”;</span><br></pre></td></tr></table></figure>
+<p>is illegal! Because str is array, when it appears on the left side, it can not be used as a right value, so can not be treated as a pointer, so can not receive the assignment from “abc”. HOWEVER, there is another exception. It is the initialization of array by a string.</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">char</span> str[<span class="number">4</span>] = “abc”；</span><br></pre></td></tr></table></figure>
+<p>is legal.<br>Up to now, we have grasped 2 ways to deal with string. One is using pointer, and the other is using array. It goes back to our initial question: what’s the difference? Answer: One is a constant, the other is a variable, because their locations in memory are different. See below:</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">char</span> *str1 = <span class="string">"abc"</span>;</span><br><span class="line">str1[<span class="number">0</span>] = <span class="string">'w'</span>;</span><br></pre></td></tr></table></figure>
+
+<p style="background-color: #000000; color: #00FF00">
+Segmentation fault.
+</p>
+
+<p>The above string can not be modifed, because it is a constant. However, in following case, the string can be modified</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">char</span> *str1 = <span class="string">"abc"</span>;</span><br><span class="line"><span class="built_in">printf</span>(<span class="string">"The address of \"abc\" is %p.\n"</span>, str1);</span><br><span class="line"></span><br><span class="line"><span class="keyword">char</span> str2[] = <span class="string">"def"</span>;</span><br><span class="line"><span class="built_in">printf</span>(<span class="string">"The address of \"def\" is %p.\n"</span>, str2);</span><br><span class="line">str2[<span class="number">0</span>] = <span class="string">'w'</span>;</span><br><span class="line"><span class="built_in">printf</span>(<span class="string">"The str2 is %s.\n"</span>, str2);</span><br></pre></td></tr></table></figure>
+
+<p style="background-color: #000000; color: #00FF00">
+The address of "abc" is 0x400ab4.<br>
+The address of "def" is 0x7ffc6960c770.<br>
+The str2 is wef.<br>
+</p>
+
+<p>From the above output, we find the address of “abc” is very small, but that of “def” is very large, indicating that they are stored at different places in the memory. The “abc” is read-only, while the “def” can be modifed. Next question is why the small address is read-only, but large address can be modified? See the next section.</p>
+</li>
+</ul>
+<h2 id="5-Memory"><a href="#5-Memory" class="headerlink" title="5 Memory"></a>5 Memory</h2><p>In fact, in the process of a C program, the information needs to be saved in memory: function, calls, variables and so on. Their order is<br><img src="/images/memory_en.png" alt="Memory_overview"><br>The constant string is placed in the same area with the function, which is read-only. In the example in Section 4, when a pointer is used to be receive a string, a constant string has been save in to the read-only area before that. However, when an array is used to receieve a string, in fact, it is just a assignment using several ‘char’ to fill in the places which the array occupies.</p>
+<p>If you want to read, please go to (Kindle &amp; paperback)(<a href="http://www.ituring.com.cn/book/1036" target="_blank" rel="noopener">Buy the book!</a>)</p>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/06/24/CFD-2030-Optimistic-or-Pessimistic-1/" rel="next" title="CFD 2030: Optimistic or Pessimistic?">
+                <i class="fa fa-chevron-left"></i> CFD 2030: Optimistic or Pessimistic?
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/12/10/c-pointer-cn/" rel="prev" title="有关C和指针">
+                有关C和指针 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+      </div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Feilin Jia</p>
+              <div class="site-description motion-element" itemprop="description">Note on computing, IT, education, etc.</div>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">14</span>
+                    <span class="site-state-item-name">posts</span>
+                  </a>
+                </div>
+              
+
+              
+
+              
+            </nav>
+          
+
+          
+
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-Pointer"><span class="nav-number">1.</span> <span class="nav-text">1 Pointer</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-Array"><span class="nav-number">2.</span> <span class="nav-text">2 Array</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-Array-is-used-as-pointer-in-some-cases（array-is-not-pointer）"><span class="nav-number">3.</span> <span class="nav-text">3 Array is used as pointer in some cases（array is not pointer）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-Array-is-not-equal-to-pointer"><span class="nav-number">4.</span> <span class="nav-text">4 Array is not equal to pointer</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-Memory"><span class="nav-number">5.</span> <span class="nav-text">5 Memory</span></a></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+  
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Feilin Jia</span>
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    
+      <span class="post-meta-item-text">Symbols count total: </span>
+    
+    <span title="Symbols count total">96k</span>
+  
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    
+      <span class="post-meta-item-text">Reading time total &asymp;</span>
+    
+    <span title="Reading time total">1:27</span>
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> v3.9.0</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> v7.0.1</div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-user"></i>
+    </span>
+    <span class="site-uv" title="Total Visitors">
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+    </span>
+  
+
+  
+    <span class="post-meta-divider">|</span>
+  
+
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-eye"></i>
+    </span>
+    <span class="site-pv" title="Total Views">
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+
+  
+
+
+  <script src="/js/src/utils.js?v=7.0.1"></script>
+
+  <script src="/js/src/motion.js?v=7.0.1"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/src/affix.js?v=7.0.1"></script>
+
+  <script src="/js/src/schemes/pisces.js?v=7.0.1"></script>
+
+
+
+  
+  <script src="/js/src/scrollspy.js?v=7.0.1"></script>
+<script src="/js/src/post-details.js?v=7.0.1"></script>
+
+
+
+  
+
+
+  <script src="/js/src/next-boot.js?v=7.0.1"></script>
+
+
+  
+
+  
+
+  
+
+  
+  
+  <script id="dsq-count-scr" src="https://feilinx.disqus.com/count.js" async></script>
+
+
+<script>
+  var disqus_config = function() {
+    this.page.url = "http://feilinx.com/2017/12/08/c-pointer-20171209/";
+    this.page.identifier = "2017/12/08/c-pointer-20171209/";
+    this.page.title = 'About C and Pointer';
+    };
+  function loadComments() {
+    var d = document, s = d.createElement('script');
+    s.src = 'https://feilinx.disqus.com/embed.js';
+    s.setAttribute('data-timestamp', '' + +new Date());
+    (d.head || d.body).appendChild(s);
+  }
+  
+    loadComments();
+  
+</script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({"tex2jax":{"inlineMath":[["$","$"],["\\(","\\)"]],"skipTags":["script","noscript","style","textarea","pre","code"],"processEscapes":true},"TeX":{"equationNumbers":{"autoNumber":"AMS"}}});
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+  
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

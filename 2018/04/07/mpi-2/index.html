@@ -1,0 +1,916 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="en">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2">
+
+<link rel="stylesheet" href="/css/main.css?v=7.0.1">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.0.1">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.0.1">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.0.1">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=7.0.1" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '7.0.1',
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false,"dimmer":false},
+    back2top: true,
+    back2top_sidebar: false,
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="Q: What did we talk about last time? Could you do a brief summary?A: Last time, we mentioned about the 4 send modes (standard, synchronous, buffered and ready). We also tested the MPI_Issend() and fou">
+<meta property="og:type" content="article">
+<meta property="og:title" content="My Q&amp;A on MPI (2)">
+<meta property="og:url" content="http://feilinx.com/2018/04/07/mpi-2/index.html">
+<meta property="og:site_name" content="Feilin Blog">
+<meta property="og:description" content="Q: What did we talk about last time? Could you do a brief summary?A: Last time, we mentioned about the 4 send modes (standard, synchronous, buffered and ready). We also tested the MPI_Issend() and fou">
+<meta property="og:locale" content="en">
+<meta property="og:updated_time" content="2020-01-18T18:38:29.268Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="My Q&amp;A on MPI (2)">
+<meta name="twitter:description" content="Q: What did we talk about last time? Could you do a brief summary?A: Last time, we mentioned about the 4 send modes (standard, synchronous, buffered and ready). We also tested the MPI_Issend() and fou">
+
+
+
+
+
+
+  <link rel="canonical" href="http://feilinx.com/2018/04/07/mpi-2/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>My Q&A on MPI (2) | Feilin Blog</title>
+  
+
+
+
+
+  <script async src="//www.googletagmanager.com/gtag/js?id=UA-101617499-2"></script>
+  <script>
+    var host = window.location.hostname;
+    if (host !== "localhost" || !true) {
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-101617499-2');
+    }
+  </script>
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+  
+    
+  
+
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Feilin Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="Toggle navigation bar">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>Home</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>Archives</a>
+
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://feilinx.com/2018/04/07/mpi-2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Feilin Jia">
+      <meta itemprop="description" content="Note on computing, IT, education, etc.">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Feilin Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">My Q&A on MPI (2)
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+
+              
+                
+              
+
+              <time title="Created: 2018-04-07 11:58:17" itemprop="dateCreated datePublished" datetime="2018-04-07T11:58:17-05:00">2018-04-07</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Edited on</span>
+                
+                <time title="Modified: 2020-01-18 12:38:29" itemprop="dateModified" datetime="2020-01-18T12:38:29-06:00">2020-01-18</time>
+              
+            
+          </span>
+
+          
+
+          
+            
+            
+              
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+            
+                <span class="post-meta-item-text">Comments: </span>
+                <a href="/2018/04/07/mpi-2/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2018/04/07/mpi-2/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="post-meta-item-icon">
+            <i class="fa fa-eye"></i>
+             Views:  
+            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+            </span>
+          
+
+          
+            <div class="post-symbolscount">
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Symbols count in article: </span>
+                
+                <span title="Symbols count in article">33k</span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Reading time &asymp;</span>
+                
+                <span title="Reading time">30 mins.</span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p><strong>Q: What did we talk about last time? Could you do a brief summary?</strong><br>A: Last time, we mentioned about the 4 send modes (standard, synchronous, buffered and ready). We also tested the MPI_Issend() and found it is not always synchronous although the function name contains a ‘s’ representing it should be synchronous. Some concepts are clarified, e.g. ‘local/nonlocal send-completion’, ‘send-return’. The non-blocking is mentioned a little bit.</p>
+<p><strong>Q: Good. I think if I can design the code very well, I do not need the non-blocking communication, right?</strong><br>A: Yes, theoretically you can, but it’s very hard for complex communication context. To avoid many design issues or deadlock, I prefer the non-blocking operations, not only for the simpler design, but sometimes, the efficiency is much better than the blocking counterparts.</p>
+<p><strong>Q: I know the non-blocking send is MPI_Isend(), right?</strong><br>A: Right, but not complete. In fact, the non-blocking send also has 4 modes (standard, synchronous, buffered and ready). Last time, in fact, I talked about the non-blocking synchronous send — MPI_Issend(). They are very similar. The difference from blocking send is MPI_I*send() will return immediately.</p>
+<p><strong>Q: Are the blocking and non-blocking send and receive compatible with each other?</strong><br>A: Yes. You can use blocking send to send the data out and the data can be received by a non-blocking receive, and vice versa.<br><a id="more"></a><br><strong>Q: In syntax, what’s the most evident difference between the MPI_Send() and MPI_Isend()?</strong><br>A: Here I put the MPI Standard 3.0 here:<br><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Blocking send</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">MPI_Send</span><span class="params">(<span class="keyword">const</span> <span class="keyword">void</span> *buf, <span class="keyword">int</span> count, MPI_Datatype datatype, <span class="keyword">int</span> dest, <span class="keyword">int</span> tag, MPI_Comm comm)</span></span></span><br><span class="line"><span class="function"><span class="comment">// Non-blocking send</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">MPI_Isend</span><span class="params">(<span class="keyword">const</span> <span class="keyword">void</span> *buf, <span class="keyword">int</span> count, MPI_Datatype datatype, <span class="keyword">int</span> dest, <span class="keyword">int</span> tag, MPI_Comm comm, MPI_Request *request)</span></span></span><br></pre></td></tr></table></figure><br>We can see there is an extra argument of MPI_Isend(), it’s type is MPI_Request.<br><strong>Q: What’s the MPI_Request type?</strong><br>A: The MPI_Request is an type for non-blocking communication. It contains some information about the communication associated with this request. Unlike the blocking operator, once it’s returned, the send-buffer is released and ready to be reused. The return of non-blocking operator means nothing, user needs some thing (here the request handle) to track the status of the communication. There is a function named “MPI_Request_get_status()” to let the user to check the status through the request object.</p>
+<p><strong>Q: You say the MPI_Request is like a tracker. It means the some variables inside this object wil change with the different communication stages. I think the default/initial value is important because it must represent some default/initial status, right?</strong><br>A: Good question. In fact, the default value of MPI_Request is not defined. In my computer, it is 0. It is better to set it to be MPI_REQUEST_NULL if necessary. It is a constant number defined in mpi.h file. In the mpich 3.0.2 version, it is<br><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//line 318: </span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> MPI_REQUEST_NULL   ((MPI_Request)0x2c000000)</span></span><br></pre></td></tr></table></figure><br>After the tracking is finished, the object needs to be reset(freed) to be MPI_REQUEST_NULL by system or the user.</p>
+<p><strong>Q: What will happen if I track a MPI_Request object with value of MPI_REQUEST_NULL?</strong><br>A: The monitoring flag will be true, which means the request is complete. It sounds weired because how can the tracker report ‘successful’ with a empty request. In fact, it is very useful in some complex situations to make the code more symmetric. You will discover this feature in the future by yourself.</p>
+<p><strong>Q: How to release/free the MPI_Request object?</strong><br>A: If you use MPI_Wait(), it will be freed by the system automatically. If you use MPI_Test(), unless the communication is finished (flag=true), the request will not be freed. If user wants to free it, just use MPI_Request_free(). Here is the code:<br><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"mpi.h"</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;unistd.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc, <span class="keyword">char</span> **argv)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">double</span> a[<span class="number">10</span>];</span><br><span class="line">    MPI_Status status;</span><br><span class="line">    MPI_Request s_req;</span><br><span class="line">    <span class="keyword">int</span> got;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">int</span> rank, <span class="built_in">size</span>;</span><br><span class="line">    MPI_Init(&amp;argc, &amp;argv);</span><br><span class="line">    MPI_Comm_rank(MPI_COMM_WORLD, &amp;rank);</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">if</span>(rank==<span class="number">0</span>)&#123;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> j=<span class="number">0</span>;j&lt;<span class="number">10</span>;j++)&#123;</span><br><span class="line">            a[j] = j*<span class="number">0.1</span>+<span class="number">2.13</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        <span class="built_in">cout</span>&lt;&lt;<span class="string">"The constant MPI_REQUEST_NULL is "</span>&lt;&lt;MPI_REQUEST_NULL&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">        </span><br><span class="line">        MPI_Issend(a, <span class="number">10</span>, MPI_DOUBLE, <span class="number">1</span>,<span class="number">0</span>,MPI_COMM_WORLD, &amp;s_req);</span><br><span class="line">        </span><br><span class="line">        MPI_Request_free(&amp;s_req);</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">if</span>(s_req == MPI_REQUEST_NULL)&#123;</span><br><span class="line">            <span class="built_in">cout</span>&lt;&lt;<span class="string">"The s_req is MPI_REQUEST_NULL"</span>&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">        &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">            <span class="built_in">cout</span>&lt;&lt;<span class="string">"The s_req is not MPI_REQUEST_NULL"</span>&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">do</span>&#123;</span><br><span class="line">            MPI_Test(&amp;s_req,&amp;got,&amp;status);</span><br><span class="line">            <span class="built_in">cout</span>&lt;&lt;<span class="string">"got is "</span>&lt;&lt;got&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">        &#125;<span class="keyword">while</span>(!got);</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">if</span>(s_req == MPI_REQUEST_NULL)&#123;</span><br><span class="line">            <span class="built_in">cout</span>&lt;&lt;<span class="string">"The s_req is MPI_REQUEST_NULL"</span>&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">        &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">            <span class="built_in">cout</span>&lt;&lt;<span class="string">"The s_req is not MPI_REQUEST_NULL"</span>&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;<span class="keyword">else</span> <span class="keyword">if</span>(rank==<span class="number">1</span>)&#123;</span><br><span class="line">        usleep(<span class="number">2e6</span>);</span><br><span class="line">        MPI_Recv(a, <span class="number">10</span>, MPI_DOUBLE, <span class="number">0</span>,<span class="number">0</span>,MPI_COMM_WORLD, &amp;status);</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;<span class="number">10</span>;i++)&#123;</span><br><span class="line">            <span class="built_in">cout</span>&lt;&lt;<span class="string">"a["</span>&lt;&lt;i&lt;&lt;<span class="string">"]="</span>&lt;&lt;a[i]&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    MPI_Finalize();</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><br>The output is<br>
+</p><p style="background-color: #000000; color: #00FF00">
+The constant MPI_REQUEST_NULL is 738197504<br>
+The s_req is MPI_REQUEST_NULL<br>
+got is 1<br>
+The s_req is MPI_REQUEST_NULL<br>
+a[0]=2.13<br>
+a[1]=2.23<br>
+a[2]=2.33<br>
+a[3]=2.43<br>
+a[4]=2.53<br>
+a[5]=2.63<br>
+a[6]=2.73<br>
+a[7]=2.83<br>
+a[8]=2.93<br>
+a[9]=3.03<br>
+</p>
+<br>We can notice that even the request object is freed immediately after the MPI_Issend() before the receiver starts to receive data, the communication will not fail. The ‘tracker’ will not influence the communication itself.<p></p>
+<p><strong>Q: The non-blocking mode is much flexible than the blocking mode. Now I want to gather some data from N processors, I need to call (N-1) times MPI_Irecv()?</strong><br>A: No. MPI has the collective communication functions. Here I will only put one which I think the most practical and a little complex. It is MPI_Gatherv():<br><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"mpi.h"</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;unistd.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc, <span class="keyword">char</span> **argv)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> <span class="built_in">position</span>, i;</span><br><span class="line">    <span class="keyword">double</span> send[<span class="number">3</span>];</span><br><span class="line">    <span class="keyword">double</span> recv[<span class="number">6</span>];</span><br><span class="line">    MPI_Status status;</span><br><span class="line">    <span class="keyword">int</span> disp[<span class="number">3</span>]=&#123;<span class="number">0</span>,<span class="number">1</span>,<span class="number">3</span>&#125;;</span><br><span class="line">    <span class="keyword">int</span> count[<span class="number">3</span>]=&#123;<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>&#125;;</span><br><span class="line">    <span class="keyword">int</span> rank, <span class="built_in">size</span>;</span><br><span class="line">    MPI_Init(&amp;argc, &amp;argv);</span><br><span class="line">    MPI_Comm_rank(MPI_COMM_WORLD, &amp;rank);</span><br><span class="line">    <span class="keyword">int</span> nsend;</span><br><span class="line">    <span class="keyword">if</span>(rank == <span class="number">0</span>)&#123;</span><br><span class="line">        send[<span class="number">0</span>]=<span class="number">1.0</span>;</span><br><span class="line">        nsend=<span class="number">1</span>;</span><br><span class="line">    &#125;<span class="keyword">else</span> <span class="keyword">if</span>(rank == <span class="number">1</span>)&#123;</span><br><span class="line">        send[<span class="number">0</span>]=<span class="number">2.0</span>;</span><br><span class="line">        send[<span class="number">1</span>]=<span class="number">3.0</span>;</span><br><span class="line">        nsend=<span class="number">2</span>;</span><br><span class="line">    &#125;<span class="keyword">else</span> <span class="keyword">if</span>(rank == <span class="number">2</span>)&#123;</span><br><span class="line">        send[<span class="number">0</span>]=<span class="number">4.0</span>;</span><br><span class="line">        send[<span class="number">1</span>]=<span class="number">5.0</span>;</span><br><span class="line">        send[<span class="number">2</span>]=<span class="number">6.0</span>;</span><br><span class="line">        nsend=<span class="number">3</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    MPI_Gatherv(send, nsend,MPI_DOUBLE, recv,count,disp,MPI_DOUBLE,<span class="number">0</span>,MPI_COMM_WORLD);</span><br><span class="line">    <span class="keyword">if</span>(rank==<span class="number">0</span>)&#123;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;<span class="number">6</span>;i++)&#123;</span><br><span class="line">            <span class="built_in">cout</span>&lt;&lt;<span class="string">"recv["</span>&lt;&lt;i&lt;&lt;<span class="string">"]="</span>&lt;&lt;recv[i]&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    MPI_Finalize();</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><br>
+</p><p style="background-color: #000000; color: #00FF00">
+recv[0]=1<br>
+recv[1]=2<br>
+recv[2]=3<br>
+recv[3]=4<br>
+recv[4]=5<br>
+recv[5]=6<br>
+</p>
+<br>We can see the proc 0 is the root. Proc 0,1,2 will send different sized data to the root. Each procs prepare the pointer of the send buffer as well as the data count. The ‘recv’, ‘count’, ‘disp’ are only meaningful for the root processor. The ‘count’ and ‘disp’ are both arrays.<p></p>
+<p><strong>Q: Nice, the collective communication saves me much energy. Does it have any drawbacks?</strong><br>A: It is not flexible. Every processors in the MPI_COMM_WORLD must execute this operator. If you only want the data from the processors with odd ranks, you can not use it directly. Of course, you can always use the send/recv to communicate, but if we want to use the collective communication, we should first put those odd ranks together (maybe create a new group or set to store those ranks) and then call thie collective communication within this group. This capability is also a part of MPI Standard, which will be talked about next time.</p>
+<p><strong>Q: Up to now, all the data for communication is just the basic datatypes, e.g. integer, float number, character…, could we communicate the user-defined structure directly between processors?</strong><br>A: The short answer is NO. Any information must be transformed into several MPI datatypes before communication. However, MPI provides the user a better way to ‘pack’ the user’s own structured data. They are MPI_Pack() and MPI_Unpack(). Each pack can have different types of data. It is not used intensively, here I give the code directly.<br><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"mpi.h"</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;unistd.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc, <span class="keyword">char</span> **argv)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> <span class="built_in">position</span>, i;</span><br><span class="line">    <span class="keyword">double</span> a[<span class="number">10</span>];</span><br><span class="line">    <span class="keyword">char</span> buff[<span class="number">1000</span>];</span><br><span class="line">    MPI_Status status;</span><br><span class="line">    <span class="keyword">int</span> rank, <span class="built_in">size</span>;</span><br><span class="line">    MPI_Init(&amp;argc, &amp;argv);</span><br><span class="line">    MPI_Comm_rank(MPI_COMM_WORLD, &amp;rank);</span><br><span class="line">    <span class="keyword">if</span>(rank==<span class="number">0</span>)&#123;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> j=<span class="number">0</span>;j&lt;<span class="number">10</span>;j++)&#123;</span><br><span class="line">            a[j] = j*<span class="number">0.1</span>+<span class="number">2.13</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">int</span> len[<span class="number">2</span>];</span><br><span class="line">        MPI_Aint disp[<span class="number">2</span>];</span><br><span class="line">        MPI_Datatype type[<span class="number">2</span>], newtype;</span><br><span class="line">        i=<span class="number">9527</span>;</span><br><span class="line">        len[<span class="number">0</span>] = <span class="number">1</span>;</span><br><span class="line">        len[<span class="number">1</span>] = <span class="number">10</span>;</span><br><span class="line">        MPI_Address(&amp;i, disp);</span><br><span class="line">        MPI_Address(a,  disp+<span class="number">1</span>);</span><br><span class="line">        <span class="built_in">cout</span>&lt;&lt;<span class="string">"Proc 0: the address of i is "</span>&lt;&lt;disp[<span class="number">0</span>]&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">        <span class="built_in">cout</span>&lt;&lt;<span class="string">"Proc 0: the address of a is "</span>&lt;&lt;disp[<span class="number">1</span>]&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">        type[<span class="number">0</span>] = MPI_INT;</span><br><span class="line">        type[<span class="number">1</span>] = MPI_DOUBLE;</span><br><span class="line">        MPI_Type_struct(<span class="number">2</span>, len, disp, type, &amp;newtype);</span><br><span class="line">        MPI_Type_commit(&amp;newtype);</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">int</span> psize = <span class="number">0</span>;</span><br><span class="line">        MPI_Pack_size(<span class="number">1</span>, newtype, MPI_COMM_WORLD, &amp;psize);</span><br><span class="line">        <span class="built_in">position</span> = <span class="number">0</span>;</span><br><span class="line">        <span class="comment">// 1st way: pack the new type</span></span><br><span class="line">        <span class="comment">//MPI_Pack(MPI_BOTTOM, 1, newtype, buff, psize, &amp;position, MPI_COMM_WORLD);</span></span><br><span class="line">        <span class="comment">// 2nd way: directly pack the old types</span></span><br><span class="line">        MPI_Pack(&amp;i, <span class="number">1</span>, MPI_INT, buff, psize, &amp;<span class="built_in">position</span>, MPI_COMM_WORLD);</span><br><span class="line">        <span class="built_in">cout</span>&lt;&lt;<span class="string">"Proc 0: position after 1st MPI_Pack is "</span>&lt;&lt;<span class="built_in">position</span>&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">        MPI_Pack(a, <span class="number">10</span>, MPI_DOUBLE, buff, psize, &amp;<span class="built_in">position</span>, MPI_COMM_WORLD);</span><br><span class="line">        <span class="built_in">cout</span>&lt;&lt;<span class="string">"Proc 0: position after 2nd MPI_Pack is "</span>&lt;&lt;<span class="built_in">position</span>&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">        MPI_Send(buff, psize, MPI_PACKED, <span class="number">1</span>,<span class="number">0</span>,MPI_COMM_WORLD);</span><br><span class="line">        MPI_Type_free(&amp;newtype);</span><br><span class="line">    &#125;<span class="keyword">else</span> <span class="keyword">if</span>(rank==<span class="number">1</span>)&#123;</span><br><span class="line">        </span><br><span class="line">        MPI_Recv(buff, <span class="number">1000</span>, MPI_PACKED, <span class="number">0</span>,<span class="number">0</span>,MPI_COMM_WORLD, &amp;status);</span><br><span class="line">        <span class="comment">// 1000 is the size in byte</span></span><br><span class="line">        <span class="built_in">position</span> = <span class="number">0</span>;</span><br><span class="line">        MPI_Unpack(buff,<span class="number">1000</span>,&amp;<span class="built_in">position</span>,&amp;i,<span class="number">1</span>,MPI_INT,MPI_COMM_WORLD);</span><br><span class="line">        </span><br><span class="line">        <span class="built_in">cout</span>&lt;&lt;<span class="string">"Proc 1: After first unpack, the position is "</span>&lt;&lt;<span class="built_in">position</span>&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">        <span class="built_in">cout</span>&lt;&lt;<span class="string">"Proc 1: The value i is "</span>&lt;&lt;i&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">        </span><br><span class="line">        MPI_Unpack(buff,<span class="number">1000</span>,&amp;<span class="built_in">position</span>,a,<span class="number">10</span>,MPI_DOUBLE, MPI_COMM_WORLD);</span><br><span class="line">        </span><br><span class="line">        <span class="built_in">cout</span>&lt;&lt;<span class="string">"Proc 1: After second unpack, the position is "</span>&lt;&lt;<span class="built_in">position</span>&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> j=<span class="number">0</span>;j&lt;<span class="number">10</span>;j++)&#123;</span><br><span class="line">            <span class="built_in">cout</span>&lt;&lt;<span class="string">"Proc 1: a["</span>&lt;&lt;j&lt;&lt;<span class="string">"]="</span>&lt;&lt;a[j]&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    MPI_Finalize();</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><br>
+</p><p style="background-color: #000000; color: #00FF00">
+Proc 0: the address of i is 140726724892152<br>
+Proc 0: the address of a is 140726724892240<br>
+Proc 0: position after 1st MPI_Pack is 4<br>
+Proc 0: position after 2nd MPI_Pack is 84<br>
+Proc 1: After first unpack, the position is 4<br>
+Proc 1: The value i is 9527<br>
+Proc 1: After second unpack, the position is 84<br>
+Proc 1: a[0]=2.13<br>
+Proc 1: a[1]=2.23<br>
+Proc 1: a[2]=2.33<br>
+Proc 1: a[3]=2.43<br>
+Proc 1: a[4]=2.53<br>
+Proc 1: a[5]=2.63<br>
+Proc 1: a[6]=2.73<br>
+Proc 1: a[7]=2.83<br>
+Proc 1: a[8]=2.93<br>
+Proc 1: a[9]=3.03<br>
+</p>
+<p></p>
+<p><strong>Q/A: We are actors, see you next time.</strong></p>
+<p>Reference:<br><a href="http://mpitutorial.com/tutorials/" target="_blank" rel="noopener">MPI Tutorial: http://mpitutorial.com/tutorials/</a><br><a href="http://mpi-forum.org/docs/mpi-3.0/mpi30-report.pdf" target="_blank" rel="noopener">MPI Standard 3.0 http://mpi-forum.org/docs/mpi-3.0/mpi30-report.pdf</a></p>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/04/05/mpi-1/" rel="next" title="My Q&A on MPI (1)">
+                <i class="fa fa-chevron-left"></i> My Q&A on MPI (1)
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/04/07/mathgirl123-cn/" rel="prev" title="《数学女孩1|2|3》">
+                《数学女孩1|2|3》 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+      </div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+
+      <div class="site-overview-wrap sidebar-panel sidebar-panel-active">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Feilin Jia</p>
+              <div class="site-description motion-element" itemprop="description">Note on computing, IT, education, etc.</div>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">14</span>
+                    <span class="site-state-item-name">posts</span>
+                  </a>
+                </div>
+              
+
+              
+
+              
+            </nav>
+          
+
+          
+
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+
+      
+
+    </div>
+  </aside>
+  
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Feilin Jia</span>
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    
+      <span class="post-meta-item-text">Symbols count total: </span>
+    
+    <span title="Symbols count total">96k</span>
+  
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    
+      <span class="post-meta-item-text">Reading time total &asymp;</span>
+    
+    <span title="Reading time total">1:27</span>
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> v3.9.0</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> v7.0.1</div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-user"></i>
+    </span>
+    <span class="site-uv" title="Total Visitors">
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+    </span>
+  
+
+  
+    <span class="post-meta-divider">|</span>
+  
+
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-eye"></i>
+    </span>
+    <span class="site-pv" title="Total Views">
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+
+  
+
+
+  <script src="/js/src/utils.js?v=7.0.1"></script>
+
+  <script src="/js/src/motion.js?v=7.0.1"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/src/affix.js?v=7.0.1"></script>
+
+  <script src="/js/src/schemes/pisces.js?v=7.0.1"></script>
+
+
+
+  
+  <script src="/js/src/scrollspy.js?v=7.0.1"></script>
+<script src="/js/src/post-details.js?v=7.0.1"></script>
+
+
+
+  
+
+
+  <script src="/js/src/next-boot.js?v=7.0.1"></script>
+
+
+  
+
+  
+
+  
+
+  
+  
+  <script id="dsq-count-scr" src="https://feilinx.disqus.com/count.js" async></script>
+
+
+<script>
+  var disqus_config = function() {
+    this.page.url = "http://feilinx.com/2018/04/07/mpi-2/";
+    this.page.identifier = "2018/04/07/mpi-2/";
+    this.page.title = 'My Q&A on MPI (2)';
+    };
+  function loadComments() {
+    var d = document, s = d.createElement('script');
+    s.src = 'https://feilinx.disqus.com/embed.js';
+    s.setAttribute('data-timestamp', '' + +new Date());
+    (d.head || d.body).appendChild(s);
+  }
+  
+    loadComments();
+  
+</script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({"tex2jax":{"inlineMath":[["$","$"],["\\(","\\)"]],"skipTags":["script","noscript","style","textarea","pre","code"],"processEscapes":true},"TeX":{"equationNumbers":{"autoNumber":"AMS"}}});
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+  
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

@@ -1,0 +1,866 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="en">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2">
+
+<link rel="stylesheet" href="/css/main.css?v=7.0.1">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.0.1">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.0.1">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.0.1">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=7.0.1" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '7.0.1',
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false,"dimmer":false},
+    back2top: true,
+    back2top_sidebar: false,
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="Q: From on the previous 2 blogs, I’ve grasped the main idea of parallelism in CPU. I think it is already very powerful, so why do people use GPU to do intensive computing? Why not add more and more co">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Burn GPU&#39;s Calories (3)">
+<meta property="og:url" content="http://feilinx.com/2019/05/05/burn-gpu-calorie-3/index.html">
+<meta property="og:site_name" content="Feilin Blog">
+<meta property="og:description" content="Q: From on the previous 2 blogs, I’ve grasped the main idea of parallelism in CPU. I think it is already very powerful, so why do people use GPU to do intensive computing? Why not add more and more co">
+<meta property="og:locale" content="en">
+<meta property="og:image" content="http://feilinx.com/images/cpu_gpu_core.png">
+<meta property="og:image" content="http://feilinx.com/images/intel_nvidia_value.png">
+<meta property="og:image" content="http://feilinx.com/images/cpu_gpu_commander.png">
+<meta property="og:image" content="http://feilinx.com/images/gpu_struct.png">
+<meta property="og:image" content="http://feilinx.com/images/gpu_sm.png">
+<meta property="og:image" content="http://feilinx.com/images/warp.png">
+<meta property="og:updated_time" content="2020-01-18T18:38:29.264Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Burn GPU&#39;s Calories (3)">
+<meta name="twitter:description" content="Q: From on the previous 2 blogs, I’ve grasped the main idea of parallelism in CPU. I think it is already very powerful, so why do people use GPU to do intensive computing? Why not add more and more co">
+<meta name="twitter:image" content="http://feilinx.com/images/cpu_gpu_core.png">
+
+
+
+
+
+
+  <link rel="canonical" href="http://feilinx.com/2019/05/05/burn-gpu-calorie-3/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>Burn GPU's Calories (3) | Feilin Blog</title>
+  
+
+
+
+
+  <script async src="//www.googletagmanager.com/gtag/js?id=UA-101617499-2"></script>
+  <script>
+    var host = window.location.hostname;
+    if (host !== "localhost" || !true) {
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-101617499-2');
+    }
+  </script>
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+  
+    
+  
+
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Feilin Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="Toggle navigation bar">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>Home</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>Archives</a>
+
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://feilinx.com/2019/05/05/burn-gpu-calorie-3/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Feilin Jia">
+      <meta itemprop="description" content="Note on computing, IT, education, etc.">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Feilin Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Burn GPU's Calories (3)
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+
+              
+                
+              
+
+              <time title="Created: 2019-05-05 11:59:46" itemprop="dateCreated datePublished" datetime="2019-05-05T11:59:46-05:00">2019-05-05</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Edited on</span>
+                
+                <time title="Modified: 2020-01-18 12:38:29" itemprop="dateModified" datetime="2020-01-18T12:38:29-06:00">2020-01-18</time>
+              
+            
+          </span>
+
+          
+
+          
+            
+            
+              
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+            
+                <span class="post-meta-item-text">Comments: </span>
+                <a href="/2019/05/05/burn-gpu-calorie-3/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2019/05/05/burn-gpu-calorie-3/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="post-meta-item-icon">
+            <i class="fa fa-eye"></i>
+             Views:  
+            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+            </span>
+          
+
+          
+            <div class="post-symbolscount">
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Symbols count in article: </span>
+                
+                <span title="Symbols count in article">9.2k</span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Reading time &asymp;</span>
+                
+                <span title="Reading time">8 mins.</span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p><strong>Q: From on the previous 2 blogs, I’ve grasped the main idea of parallelism in CPU. I think it is already very powerful, so why do people use GPU to do intensive computing? Why not add more and more cores in CPU?</strong><br>A: Because of the complex structure and design pattern of CPU cores, it is impossible to put thousands of cores in a CPU chip. However, GPU has a totally different design and the ‘core’ in GPU is extremely simplified (only the arithmetic related units are remained), so that to achieve massive parallelism for large scale intensive computation, GPU is the best choice for now.<br><strong>Q: I see, so the core in CPU is very powerful, but that in GPU is very weak. Is there any quantitative way to measure that?</strong><br>A: Of course. The speed clock in CPU’s core is about 2~5GHz, but it’s is about 500-1300MHz in GPU’s core. In a CPU’s core, it has multiple ALU, FPUs, so may support multi-threading execution. However, in a GPU’s core (actually called CUDA core, named by NVIDIA), it has only one ALU and/or one FPU, so no multi-threading capability. Look at the picture below<br><img src="/images/cpu_gpu_core.png" alt="CPU"><br><a id="more"></a><br>The CPU’s core is like a math professor in a college, but the GPU’s core is similar to a student in a primary school. To do an intensive computing task in most science and engineering, a famous mathematician is not necessarily faster than 2000 students, because all the tasks are just simple arithmetic operations.<br><strong>Q: I see. The massive parallelism really changes things. You mean the GPU is designed to meet this emerging requirement in science and engineering?</strong><br>A: Not really. The history is a little complex. In fact, initially, the GPU card was just for visualization purpose in gaming. Because there are many pixels (10K~100M) in a screen and their colors (RGB values) need to be updated 20-60 times every each second, if this task is sent to CPU, the pixels have to be updated one by one (or several by several depending on number of cores in CPU), which is not affordable, especially with the increasing screen resolution and refreshing rate. For example, the refresh rate of a gaming monitor, ASUS ROG Swift PG279Q, can be overclocked to 165Hz!<br><strong>Q: That’s impossible for CPU to handle.</strong><br>A: Yes. The initial GPU is only for gaming purpose, but later on, maybe some scientists found why not use this high parallel structure to do computation, e.g. particle simulation? Then the general purpose GPU (GPGPU) was created, and then more and more scientists and engineers, such as people in academics, oil companies, NASA and many national labs, purchased GPUs to accelerate their simulations. A big market was emerging suddenly. Many small GPU manufacturers were created to cater this market.<br><strong>Q: Who is the biggest winner up to now?</strong><br>A: NVIDIA. Nowadays, there are only three key players in ths market: Intel, AMD and NVIDIA. Two of them are actual CPU manufacturers as well and they keep incorporating GPUs into their CPUs, while NVIDIA keeps making discrete GPUs as an extension to CPUs. Nowadays, when you see a NVIDIA logo attached on a desktop PC or laptop, it means the NVIDIA GPU card is installed. Here is the history of market value of Intel and NVIDIA.<br><img src="/images/intel_nvidia_value.png" alt="CPU"><br>The NVIDIA is almost like boosted by a rocket during the recent 5 years.<br><strong>Q: Impressive rising. The Intel has a history of 50 years, but the NVIDIA is only 26 year old. Now they have comparable values. I think NVIDIA will eat most of the GPU market soon.</strong><br>A: Not really. NVIDIA is only popular in desktop environment, while in mobile market, a completely different set of palyers emerge: QualComm and Broadcom. Therefore, in the future there are still many possibilities.<br><strong>Q: I see…what kind of GPUs would you like to talk about? Integrated or discrete?</strong><br>A: NVIDIA’s discrete GPUs, because they are widely used in many supercomputers like TOP1 Summit by OakRidge National Lab. The GPUs provide its 95% computing power.<br><strong>Q: Hard to imagine. It seems like my previous knowledge of CPU is going to be useless soon.</strong><br>A: No. The CPU is very important, because the current GPUs are not processors but “co-processors”. They work under the supervision of a host CPU. All of the initial data in GPU must come from CPU via the connection, e.g. PCI Express bus. This mode is almost like a commander + workhorses in figure below<br><img src="/images/cpu_gpu_commander.png" alt="CPU"><br>Like the radio cards and wifi units, the GPUs are just extensions in PCI bus, after its driver is installed, the mechanism of GPU is very similar to the Pthreads in my last blog. Programmers just need to create functions for each GPU core (like thread in CPU) and let it run!<br><strong>Q: Hmm…perfect! If they are similar, now I can do the GPU programming using my existing development environment, e.g. LINUX+GCC？</strong><br>A: No…not that easy case. Because CPU cores and GPU cores are completely different hardwares, so they have different “instruction set architectures” (ISA), which means they use different languages. Image, a commander uses English to give orders to the workhorses who can only understand spanish. That won’t work. GCC can only translate your code to the language used by CPU, so GPU can not understand it and will do nothing.<br><strong>Q: Reasonable. Things are more complex than I thought. It seems we need to develop a new language understood by GPU.</strong><br>A: Yes. In GPU, the assembly level instructions are quite different from CPU, but it is not a realistic thing to let our scientists and engineers learn a brand new programming language just to accelerate computation. In fact, in some early stage of GPUs, some geeks used some low-level languages to program for GPUs, but of course, it was too hard. Therefore, some ideas come out, like CUDA and OpenCL. Here I will only talk about CUDA (nvcc compiler) released by NVIDIA in 2007. To alleviate the pain to learn a new language, it just defines many new keywords based on C language, therefore the learning is much easier. Also for compiling, “nvcc” compiler can automatically seperate the host code and the device code and compile them into different assembly level codes for different hardwares.<br><strong>Q: This is very helpful for all learners. Before programming, could you show some structures of GPU? I still wonder how it can have thousands of cores in it.</strong><br>A: Sure. Look at the figure below<br><img src="/images/gpu_struct.png" alt="CPU"><br>It looks very similar to CPU, but different from CPU, GPU has no L3 cache. The last level cache (LLC) is L2. All the computing units are integrated into so called streaming multiprocessor (SM). It is pretty much like the physical core in CPU from outside, but the inner structures are quite different. See the picture below<br><img src="/images/gpu_sm.png" alt="CPU"><br>Compared with physical cores in CPU, there are not so many built-in controllers, but many cores inside. As I said before, each core has 1 ALU and/or 1 FPU. Another difference is the register files are shared by all cores. This is the reason why some people don’t want to call the processing units in GPU “cores”, because the cores don’t have their own registers. Also there are many Load/Store units (LD/ST) to handle memory access between cores and caches. SFU is for special function calculation, like sin(), cos(), square root, logarithm, and exponential functions.<br><strong>Q: I know instruction cache is to store machine code for execution. What’s warp and warp scheduler?</strong><br>A: Good question. Warps make programming tricky but computing much faster. Because of some inner design in hardware, every 32 cores constitute a “super-thread”. If the logics of these 32 cores are the same, they can execute simultaneously, which means there is no divergence. However, if the divergence happen, the diverged parts have to be executed serially by different cores in that warp. Like the figure below<br><img src="/images/warp.png" alt="CPU"><br>This feature puts more pressure to programmers to try to avoid warp divergence for performance purpose. Actually, programming on GPU usually needs more rounds of coding optimization before the production run, because there are many features like warp in GPU, which can influence the performance significantly.<br><strong>Q: It seems like the CPU takes over much burden from programmers to itself.</strong><br>A: Yes. CPU has many advanced features, which can do much optimiztion for programmers. Even a new programer writes a moderately good code, but it is still possible that CPU can make it run perfectly through super-scalar, piplining techniques automatically. However, for GPU, it puts all pressure to programmers to handle every details. It is the price that programmers must pay for the superior parallelism. Today’s knowlege is already a little bit much. Next time, we will dive into GPU programming.<br><strong>Q: See you next time.</strong></p>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/03/04/math-human-civilization/" rel="next" title="《数学与人类文明》Note">
+                <i class="fa fa-chevron-left"></i> 《数学与人类文明》Note
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/05/12/parallel-cpu-coursera/" rel="prev" title="Vectorization I">
+                Vectorization I <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+      </div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+
+      <div class="site-overview-wrap sidebar-panel sidebar-panel-active">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Feilin Jia</p>
+              <div class="site-description motion-element" itemprop="description">Note on computing, IT, education, etc.</div>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">14</span>
+                    <span class="site-state-item-name">posts</span>
+                  </a>
+                </div>
+              
+
+              
+
+              
+            </nav>
+          
+
+          
+
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+
+      
+
+    </div>
+  </aside>
+  
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Feilin Jia</span>
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    
+      <span class="post-meta-item-text">Symbols count total: </span>
+    
+    <span title="Symbols count total">96k</span>
+  
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    
+      <span class="post-meta-item-text">Reading time total &asymp;</span>
+    
+    <span title="Reading time total">1:27</span>
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> v3.9.0</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> v7.0.1</div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-user"></i>
+    </span>
+    <span class="site-uv" title="Total Visitors">
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+    </span>
+  
+
+  
+    <span class="post-meta-divider">|</span>
+  
+
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-eye"></i>
+    </span>
+    <span class="site-pv" title="Total Views">
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+
+  
+
+
+  <script src="/js/src/utils.js?v=7.0.1"></script>
+
+  <script src="/js/src/motion.js?v=7.0.1"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/src/affix.js?v=7.0.1"></script>
+
+  <script src="/js/src/schemes/pisces.js?v=7.0.1"></script>
+
+
+
+  
+  <script src="/js/src/scrollspy.js?v=7.0.1"></script>
+<script src="/js/src/post-details.js?v=7.0.1"></script>
+
+
+
+  
+
+
+  <script src="/js/src/next-boot.js?v=7.0.1"></script>
+
+
+  
+
+  
+
+  
+
+  
+  
+  <script id="dsq-count-scr" src="https://feilinx.disqus.com/count.js" async></script>
+
+
+<script>
+  var disqus_config = function() {
+    this.page.url = "http://feilinx.com/2019/05/05/burn-gpu-calorie-3/";
+    this.page.identifier = "2019/05/05/burn-gpu-calorie-3/";
+    this.page.title = 'Burn GPU\'s Calories (3)';
+    };
+  function loadComments() {
+    var d = document, s = d.createElement('script');
+    s.src = 'https://feilinx.disqus.com/embed.js';
+    s.setAttribute('data-timestamp', '' + +new Date());
+    (d.head || d.body).appendChild(s);
+  }
+  
+    loadComments();
+  
+</script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({"tex2jax":{"inlineMath":[["$","$"],["\\(","\\)"]],"skipTags":["script","noscript","style","textarea","pre","code"],"processEscapes":true},"TeX":{"equationNumbers":{"autoNumber":"AMS"}}});
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+  
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

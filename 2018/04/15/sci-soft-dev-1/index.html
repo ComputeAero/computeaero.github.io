@@ -1,0 +1,965 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="en">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2">
+
+<link rel="stylesheet" href="/css/main.css?v=7.0.1">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.0.1">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.0.1">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.0.1">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=7.0.1" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '7.0.1',
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false,"dimmer":false},
+    back2top: true,
+    back2top_sidebar: false,
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="Q: What are you doing recently?A: I am doing some scientific programming.Q: I hear about some programming languages, like C/C++, Java, Python, and so on. But could you tell me what’s the difference be">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Scientific Software Development I">
+<meta property="og:url" content="http://feilinx.com/2018/04/15/sci-soft-dev-1/index.html">
+<meta property="og:site_name" content="Feilin Blog">
+<meta property="og:description" content="Q: What are you doing recently?A: I am doing some scientific programming.Q: I hear about some programming languages, like C/C++, Java, Python, and so on. But could you tell me what’s the difference be">
+<meta property="og:locale" content="en">
+<meta property="og:image" content="http://feilinx.com/images/soft_dev_cycle.png">
+<meta property="og:updated_time" content="2020-01-18T18:38:29.268Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Scientific Software Development I">
+<meta name="twitter:description" content="Q: What are you doing recently?A: I am doing some scientific programming.Q: I hear about some programming languages, like C/C++, Java, Python, and so on. But could you tell me what’s the difference be">
+<meta name="twitter:image" content="http://feilinx.com/images/soft_dev_cycle.png">
+
+
+
+
+
+
+  <link rel="canonical" href="http://feilinx.com/2018/04/15/sci-soft-dev-1/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>Scientific Software Development I | Feilin Blog</title>
+  
+
+
+
+
+  <script async src="//www.googletagmanager.com/gtag/js?id=UA-101617499-2"></script>
+  <script>
+    var host = window.location.hostname;
+    if (host !== "localhost" || !true) {
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-101617499-2');
+    }
+  </script>
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+  
+    
+  
+
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Feilin Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="Toggle navigation bar">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>Home</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>Archives</a>
+
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://feilinx.com/2018/04/15/sci-soft-dev-1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Feilin Jia">
+      <meta itemprop="description" content="Note on computing, IT, education, etc.">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Feilin Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Scientific Software Development I
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+
+              
+                
+              
+
+              <time title="Created: 2018-04-15 21:57:25" itemprop="dateCreated datePublished" datetime="2018-04-15T21:57:25-05:00">2018-04-15</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Edited on</span>
+                
+                <time title="Modified: 2020-01-18 12:38:29" itemprop="dateModified" datetime="2020-01-18T12:38:29-06:00">2020-01-18</time>
+              
+            
+          </span>
+
+          
+
+          
+            
+            
+              
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+            
+                <span class="post-meta-item-text">Comments: </span>
+                <a href="/2018/04/15/sci-soft-dev-1/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2018/04/15/sci-soft-dev-1/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="post-meta-item-icon">
+            <i class="fa fa-eye"></i>
+             Views:  
+            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+            </span>
+          
+
+          
+            <div class="post-symbolscount">
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Symbols count in article: </span>
+                
+                <span title="Symbols count in article">16k</span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Reading time &asymp;</span>
+                
+                <span title="Reading time">15 mins.</span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p><strong>Q: What are you doing recently?</strong><br>A: I am doing some scientific programming.<br><strong>Q: I hear about some programming languages, like C/C++, Java, Python, and so on. But could you tell me what’s the difference between the general purposed programming and scientific programming?</strong><br>A: In short, more extensive arithmetic operations on real numbers, which is represented by a number of floating point type in computers.<br><strong>Q: I think if the floating number can be represented in computers, there should not be too much difference from integer, right?</strong><br>A: Problems come here. Computer can’t represent a general real number in an exact manner. For irrational number, of course, we can only use an approximated number with its several leading digits. However, even for rational numbers, we can only use an approximation.<br><strong>Q: What kind of approximation? Or what’s the error?</strong><br>A: It depends. There are several types of floating point number: single-precision, double-precision and extended precision (IEEE 754 Standard). They have different level of accuracy. Look at this table</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>Tables</th>
+<th style="text-align:center">unit round-off</th>
+<th style="text-align:center">max number</th>
+<th style="text-align:center">bits</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>single-precision</td>
+<td style="text-align:center">6.e-8</td>
+<td style="text-align:center">10^38</td>
+<td style="text-align:center">32</td>
+</tr>
+<tr>
+<td>double-precision</td>
+<td style="text-align:center">2.e-16</td>
+<td style="text-align:center">10^308</td>
+<td style="text-align:center">64</td>
+</tr>
+<tr>
+<td>extended-precision</td>
+<td style="text-align:center">5e-20</td>
+<td style="text-align:center">10^9863</td>
+<td style="text-align:center">80</td>
+</tr>
+</tbody>
+</table>
+</div>
+<a id="more"></a>
+<p><strong>Q: What’s the difficulty?</strong><br>A: In most general purposed programming, the logic operations are dominated, but for scientific programming, we do lots of arithmetic calculations, which may cause many problems, like NAN (not a number). Its occurrence is due to undefined operation, like 0/0, Inf/Inf, Inf-Inf, sqrt(-1), log(-1), etc.<br><strong>Q: How can I detect a NAN number?</strong><br>A: From the IEEE Standard, the NAN is the only floating point number which is not equal to itself. If $x==x$ fails, it must be a NAN.<br><strong>Q: What’s the most common arithmetic computation?</strong><br>A: Solve the linear equation $Ax=b$ efficiently.<br><strong>Q: <span>$x=A^{-1}*b$</span><!-- Has MathJax -->, right?</strong><br>A: Right, but in numerical computation, you can’t get an exact inverse of A. Sometimes, the error is enormous. It can be indicated by the condition number of A, which indicates the error sensitivity of the matrix. This is why people use some precondition process to make the system to be well-conditioned.<br><strong>Q: Ok, maybe too much mathematics for me. Let’s talk about programming more. What language do you use to do your scientific computation?</strong><br>A: C/C++ and Matlab.<br><strong>Q: Why not Java? I think it is more popular in IT industry.</strong><br>A: The efficiency is not that high. I know there are at least two factors. First, Java is an intermediate language between compiled and interpreted languages. The source code written in Java will be compiled into ‘bytecode’ first and then interpreted by Java virtual machine (JVM). This interpretation will reduce the execution speed. The second thing is Java provides garbage collection. It’s a very user-friendly feature to avoid nearly 99.99% memory problems, but the price is to cost more. C/C++ is a completely compiled language and the garbage collection is handled by the developer themselves.<br><strong>Q: OK, I see. But why not Fortran? I know many scientists are using Fortran 2003, which provides OOP features also.</strong><br>A: I do not know much about Fortran 2003. It has some good features, like good compatibility with C (e.g. C_INT, C_FLOAT…). Maybe it is also related with many factors, like the history, software environment, etc. For languages themselves, C/C++ passes the arguments by value (copy the value of args onto the stack), but Fortran passes the arguments by reference (put the address of args onto the stack). Also for “multi-dimensional array”, C/C++ uses row-major storage order, but Fortran uses column-major order. There is no any preference for computers, but for developers with different habits, it really matters.<br><strong>Q: I see. Why you use quotation marks for “multi-dimensional array”?</strong><br>A: Fortran supports 2D array intrinsically, but C/C++ only has 1D array. The 2D array is represented by a 1D array of some 1D arrays.<br><strong>Q: You say developers with different habits would prefer C/C++ or Fortran, why?</strong><br>A: It relates with the efficiency of memory access. For example, if you want to do a matrix-vector multiplication. A is $m \times n$. For C/C++, the most efficient way is<br><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;m;i++)</span><br><span class="line">  y[i]=<span class="number">0</span></span><br><span class="line"><span class="keyword">for</span>(<span class="keyword">int</span> j=<span class="number">0</span>;j&lt;n;j++)</span><br><span class="line">  y[i] += A[i][j]*x[j]</span><br></pre></td></tr></table></figure><br>For Fortran, the most efficient way is<br><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span>(i=<span class="number">0</span>;i&lt;m;i++)</span><br><span class="line">  y[i]=<span class="number">0</span></span><br><span class="line"><span class="keyword">for</span>(j=<span class="number">0</span>;j&lt;n;j++)</span><br><span class="line">  <span class="keyword">for</span>(i=<span class="number">0</span>;i&lt;m;i++)</span><br><span class="line">    y[i] += A[i][j]*x[j]</span><br></pre></td></tr></table></figure><br><strong>Q: Why is reading the adjacent memory more efficient?</strong><br>A: It relates with the mechanism of computer’s memory. The big picture is when the CPU wants to process some data from memory, it will grab a block a memory containing those data into register and caches. The data access in register and cache is much faster than that in main memory. Look at the structure and the table<br>Register&lt;—&gt;L1 cache&lt;—&gt;L2 cache&lt;—&gt;main memory</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>Pentium 4 CPU</th>
+<th style="text-align:center">Register</th>
+<th style="text-align:center">L1 cache</th>
+<th style="text-align:center">L2 cache</th>
+<th style="text-align:center">main memory</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>access cost(ns)</td>
+<td style="text-align:center">0.4</td>
+<td style="text-align:center">1.0</td>
+<td style="text-align:center">8.0</td>
+<td style="text-align:center">150</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>If the CPU can read the nearby data from register, the data access is 300X faster than grabbing it from main memory.<br><strong>Q: What a huge advantage!</strong><br>A: Yes. If a programmer likes row-major storage order, using Fortran will be a nightmare, and vice versa.<br><strong>Q: You mention about the memory. I wonder how the variables are stored in the memory?</strong><br>A: In fact, you can refer to my previous blog <a href="http://cfdplay.com/2017/12/08/c-pointer-20171209/" target="_blank" rel="noopener">Here</a>. The allocating variables are stored in three regions: stack, fixed memory location and heap. The stack stores the local variables, which will be eliminated automatically when the function returns. The fixed memory location stores the global variables to be used by several different subroutines. Moreover, the local static variables are also here. The heap is good for storing large objects. When you use malloc or new, it tries to find a block of free memory and return a pointer to the start of that block of memory.<br><strong>Q: The heap sounds cool. If I <span>$malloc(10*sizeof(double))$</span><!-- Has MathJax -->, so it will find a block of <span>$8\times10=80$</span><!-- Has MathJax --> byte?</strong><br>A: Not really. In fact, the block is a little larger than 80 bytes, because for each block, it needs a small header to store the related information usually before the content block, like array size, which is used for deallocation, otherwise, the system doesn’t know how many bytes will be freed.<br><strong>Q: Heap is smart. I wonder how the system finds the proper free block? Just scan the memory directly? That will be too expensive, right?</strong><br>A: Good question. In fact, to facilitate this kind of searching, a memory heap may maintain two linked lists of pointers to blocks of memory. One (allocated list) contains the pointers to blocks of allocated memory, and the other (free list) contains the pointers to blocks of free memory.<br><strong>Q: Heap is very smart. Should we use heap as possible as we can?</strong><br>A: No. The allocation and deallocation have some overhead. That is to say, in a short and extensively repeated function, try to avoid using heap memory. The heap is good for large objects which have relatively long lifecycles.<br><strong>Q: Hmm, reasonable. In a previous question, I forget to ask. You say the C/C++ does not support 2D array, which is treated as 1D array of 1D array. For example, if I declare a dynamic “2D array”: A[10][20], the A[0][:] and A[1][:] may not locate at contiguous memory location.</strong><br>A: Exactly. You are right. The consecutive allocation calls can’t guarantee the memory is contiguous.<br><strong>Q: What a sad thing…</strong><br>A: Wait, there is still a trick to satisfy your expectation. See this:<br><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">A = (<span class="keyword">double</span>**) <span class="built_in">malloc</span>(m*<span class="keyword">sizeof</span>(<span class="keyword">double</span>*))</span><br><span class="line">A[<span class="number">0</span>] = (<span class="keyword">double</span>*) <span class="built_in">malloc</span>(m*n*<span class="keyword">sizeof</span>(<span class="keyword">double</span>))</span><br><span class="line"><span class="keyword">for</span>(i=<span class="number">1</span>;i&lt;m;i++)</span><br><span class="line">  A[i] = A[<span class="number">0</span>]+i*n</span><br></pre></td></tr></table></figure><br>A: Exactly. The contiguous allocation in heap memory will not only enhance the data access speed, but also avoid memory fragmentation. Just imagine that a heap, cut into 10K small blocks, is much less efficient than a heap, which is cut into 10 large blocks.<br><strong>Q: Great! What else do you use to increase the efficiency?</strong><br>A: Not many. I still need to go deeper in this topics. There are many good books about efficient memory, which I have not read yet. You may also hear that C++ is slower than C. Programmers should avoid excessive object creation and destruction by using the reference of the arguments, like:<br><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">func</span><span class="params">(<span class="keyword">const</span> Object &amp;y)</span> <span class="keyword">const</span></span>;</span><br></pre></td></tr></table></figure><br>Also, using inline functions can reduce the function call overhead. In fact, the efficiency is highly related with locality. There are two types of locality: temporal locality (executed code) and spatial locality (data distribution). The row-major and column-major order is a good example of spatial locality. For the temporal locality, try to reduce function calls, which normally lead to setting up of stack frames.<br><strong>Q: What’s the cost of the various arithmetic operations?</strong><br>A: plus and minus cost 1 clock cycle. Multiplication costs 1~2 cycles. Divide costs about 26 cycles. Try to use less divide. Use <span>$x*0.5$</span><!-- Has MathJax --> instead of <span>$x/2$</span><!-- Has MathJax -->.<br><strong>Q: Wow, you need to remember all of the above tips when you are programming? That’s a huge burden!</strong><br>A: Not really. The modern compiler becomes stronger and stronger. It already do many optimizations for us, e.g.<br>(1)    Common sub-expression elimination<br>(2)    Code hoisting<br>(3)    Dead code elimination<br>(4)    Code inlining<br>(5)    Register allocation<br>(6)    Strength reduction<br>Here I will give an example of Code hoisting. The original source code is<br><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> i,j;</span><br><span class="line"><span class="keyword">double</span> sum=<span class="number">0.</span>;</span><br><span class="line"><span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;m;i++)</span><br><span class="line">  <span class="keyword">for</span>(<span class="keyword">int</span> j=<span class="number">0</span>;j&lt;n;j++)</span><br><span class="line">      sum+=A-&gt;me[i][j];</span><br></pre></td></tr></table></figure><br>After the optimization by compiler, the code will be<br><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> i,j;</span><br><span class="line"><span class="keyword">double</span> sum=<span class="number">0.</span>, **A_me, *A_me_i;</span><br><span class="line">A_me = A-&gt;me;</span><br><span class="line"><span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;mi++)&#123;</span><br><span class="line">    A_me_i = A_me[i];</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> j=<span class="number">0</span>;j&lt;n;j++)</span><br><span class="line">      sum += A_me_i[j];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><br>The compiler will remove the quantities that are independent of the loop index out from the loop. The orignal source has 2 memory address computation and 3 memory access for each increament, but the optimized version only has 1 memory address computation and 1 memory access. Developers do not have to worry about this kind of optimization.<br><strong>Q: With these wonderful skills as well as tricks, I believe you can develop very fast.</strong><br>A: Not really. Software development is an endless cycle. Look at this<br><img src="/images/soft_dev_cycle.png" width="300px" height="200px"><br>Q: Maybe I have bothered you too much.<br>A: Doesn’t matter, I need to take a rest apart from the design, test, debug and use.<br>Q/A: See you next time!<br><strong>Reference</strong><br><a href="https://www.amazon.com/Writing-Scientific-Software-Guide-Style/dp/0521675952/ref=mt_paperback?_encoding=UTF8&amp;me=" target="_blank" rel="noopener">Oliveira, Suely, and David E. Stewart. Writing Scientific Software: a guide to good style. Cambridge University Press, 2006.</a></p>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/04/07/mathgirl123-cn/" rel="next" title="《数学女孩1|2|3》">
+                <i class="fa fa-chevron-left"></i> 《数学女孩1|2|3》
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/07/19/calculus-galary/" rel="prev" title="微积分的历程--从牛顿到勒贝格">
+                微积分的历程--从牛顿到勒贝格 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+      </div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+
+      <div class="site-overview-wrap sidebar-panel sidebar-panel-active">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Feilin Jia</p>
+              <div class="site-description motion-element" itemprop="description">Note on computing, IT, education, etc.</div>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">14</span>
+                    <span class="site-state-item-name">posts</span>
+                  </a>
+                </div>
+              
+
+              
+
+              
+            </nav>
+          
+
+          
+
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+
+      
+
+    </div>
+  </aside>
+  
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Feilin Jia</span>
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    
+      <span class="post-meta-item-text">Symbols count total: </span>
+    
+    <span title="Symbols count total">96k</span>
+  
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    
+      <span class="post-meta-item-text">Reading time total &asymp;</span>
+    
+    <span title="Reading time total">1:27</span>
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> v3.9.0</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> v7.0.1</div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-user"></i>
+    </span>
+    <span class="site-uv" title="Total Visitors">
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+    </span>
+  
+
+  
+    <span class="post-meta-divider">|</span>
+  
+
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-eye"></i>
+    </span>
+    <span class="site-pv" title="Total Views">
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+
+  
+
+
+  <script src="/js/src/utils.js?v=7.0.1"></script>
+
+  <script src="/js/src/motion.js?v=7.0.1"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/src/affix.js?v=7.0.1"></script>
+
+  <script src="/js/src/schemes/pisces.js?v=7.0.1"></script>
+
+
+
+  
+  <script src="/js/src/scrollspy.js?v=7.0.1"></script>
+<script src="/js/src/post-details.js?v=7.0.1"></script>
+
+
+
+  
+
+
+  <script src="/js/src/next-boot.js?v=7.0.1"></script>
+
+
+  
+
+  
+
+  
+
+  
+  
+  <script id="dsq-count-scr" src="https://feilinx.disqus.com/count.js" async></script>
+
+
+<script>
+  var disqus_config = function() {
+    this.page.url = "http://feilinx.com/2018/04/15/sci-soft-dev-1/";
+    this.page.identifier = "2018/04/15/sci-soft-dev-1/";
+    this.page.title = 'Scientific Software Development I';
+    };
+  function loadComments() {
+    var d = document, s = d.createElement('script');
+    s.src = 'https://feilinx.disqus.com/embed.js';
+    s.setAttribute('data-timestamp', '' + +new Date());
+    (d.head || d.body).appendChild(s);
+  }
+  
+    loadComments();
+  
+</script>
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+  
+    
+      <script type="text/x-mathjax-config">
+  
+
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$', '$'], ['\\(', '\\)'] ],
+      processEscapes: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      
+      equationNumbers: {
+        autoNumber: 'AMS'
+      }
+    }
+  });
+  MathJax.Hub.Register.StartupHook('TeX Jax Ready', function() {
+    MathJax.InputJax.TeX.prefilterHooks.Add(function(data) {
+      if (data.display) {
+        var next = data.script.nextSibling;
+        while (next && next.nodeName.toLowerCase() === '#text') { next = next.nextSibling }
+        if (next && next.nodeName.toLowerCase() === 'br') { next.parentNode.removeChild(next) }
+      }
+    });
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for (i = 0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+<script src="//cdn.jsdelivr.net/npm/mathjax@2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+<style>
+.MathJax_Display {
+  overflow-x: scroll;
+  overflow-y: hidden;
+}
+</style><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({"tex2jax":{"inlineMath":[["$","$"],["\\(","\\)"]],"skipTags":["script","noscript","style","textarea","pre","code"],"processEscapes":true},"TeX":{"equationNumbers":{"autoNumber":"AMS"}}});
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
+
+    
+  
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

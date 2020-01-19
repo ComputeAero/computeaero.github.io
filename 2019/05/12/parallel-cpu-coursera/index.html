@@ -1,0 +1,947 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="en">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2">
+
+<link rel="stylesheet" href="/css/main.css?v=7.0.1">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.0.1">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.0.1">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.0.1">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=7.0.1" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '7.0.1',
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false,"dimmer":false},
+    back2top: true,
+    back2top_sidebar: false,
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="Q: Recently, I saw many new product launching presentations of smart phones. To run those bigger and bigger mobile video games, the mobile phones are gettting faster and faster.A: Exactly. However, I">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Vectorization I">
+<meta property="og:url" content="http://feilinx.com/2019/05/12/parallel-cpu-coursera/index.html">
+<meta property="og:site_name" content="Feilin Blog">
+<meta property="og:description" content="Q: Recently, I saw many new product launching presentations of smart phones. To run those bigger and bigger mobile video games, the mobile phones are gettting faster and faster.A: Exactly. However, I">
+<meta property="og:locale" content="en">
+<meta property="og:image" content="http://feilinx.com/images/parallel_layers.png">
+<meta property="og:image" content="http://feilinx.com/images/vectorization.png">
+<meta property="og:updated_time" content="2020-01-18T18:38:29.268Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Vectorization I">
+<meta name="twitter:description" content="Q: Recently, I saw many new product launching presentations of smart phones. To run those bigger and bigger mobile video games, the mobile phones are gettting faster and faster.A: Exactly. However, I">
+<meta name="twitter:image" content="http://feilinx.com/images/parallel_layers.png">
+
+
+
+
+
+
+  <link rel="canonical" href="http://feilinx.com/2019/05/12/parallel-cpu-coursera/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>Vectorization I | Feilin Blog</title>
+  
+
+
+
+
+  <script async src="//www.googletagmanager.com/gtag/js?id=UA-101617499-2"></script>
+  <script>
+    var host = window.location.hostname;
+    if (host !== "localhost" || !true) {
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-101617499-2');
+    }
+  </script>
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+  
+    
+  
+
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Feilin Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="Toggle navigation bar">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>Home</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>Archives</a>
+
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://feilinx.com/2019/05/12/parallel-cpu-coursera/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Feilin Jia">
+      <meta itemprop="description" content="Note on computing, IT, education, etc.">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Feilin Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Vectorization I
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+
+              
+                
+              
+
+              <time title="Created: 2019-05-12 22:53:25" itemprop="dateCreated datePublished" datetime="2019-05-12T22:53:25-05:00">2019-05-12</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Edited on</span>
+                
+                <time title="Modified: 2020-01-18 12:38:29" itemprop="dateModified" datetime="2020-01-18T12:38:29-06:00">2020-01-18</time>
+              
+            
+          </span>
+
+          
+
+          
+            
+            
+              
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+            
+                <span class="post-meta-item-text">Comments: </span>
+                <a href="/2019/05/12/parallel-cpu-coursera/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2019/05/12/parallel-cpu-coursera/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="post-meta-item-icon">
+            <i class="fa fa-eye"></i>
+             Views:  
+            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+            </span>
+          
+
+          
+            <div class="post-symbolscount">
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Symbols count in article: </span>
+                
+                <span title="Symbols count in article">18k</span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Reading time &asymp;</span>
+                
+                <span title="Reading time">17 mins.</span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p><strong>Q: Recently, I saw many new product launching presentations of smart phones. To run those bigger and bigger mobile video games, the mobile phones are gettting faster and faster.</strong><br>A: Exactly. However, I want to say although smart phones are upgraded to cater to the emerging apps, many apps are far from exploiting all the hardware resources yet.<br><strong>Q: Really? Doesn’t the mobile apps run always faster on more recent devices?</strong><br>A: Not always. Actually it may be slower in most cases.<br><strong>Q: Oh? Why? The CPUs are faster and faster, right?</strong><br>A: No, not that case. See this figure. The CPU’s frequency has stagnated for around 10 years. However, the number transistors and logical cores are increasing rapidly, which lead to the speedup of microprocessors.<br><strong>Q: Hmm… I don’t know much details about these parameters, but why the frequency can not be improved evidently?</strong><br>A: It relates to a lot of physics. To make it short, the power cost will increase exponentially with the increasing clock speed. Also, as a result, the generated heat can not be handled by the cooling system. It will burn. This is the reason why vendors are turnning to multi-core strategy.<br><strong>Q: Hmm… I see. Let’s dot try to improve the clock speed. But I think if an computer or smartphone has more cores, the apps should be faster than running on a single core, because we have more workers, right?</strong><br>A: Not the case by nature. Let me first say the “frequency”. The frequency is a free lunch for developers, because it determines the execution speed of each instruction, thus programmers don’t need to pay any special attention on it. It means that, on a 1GHz processor, a program can run 10 times faster than that on a 100MHz one without any change of the code. However, a program can not exploit the multi-cores automatically, because the original program was designed to run on a single core. While it is running, other cores are just idle there. To use the power of multi-cores is the work of programmers.<br><a id="more"></a><br><strong>Q: So… programmers, nowadays, have to manipulate the multi-core hardware directly while programming? That will be very difficult.</strong><br>A: No. If that’s the case, most of programmers will be laid off, because that will be a very steep learning curve. Also, different OS and types of machines have different ways to manipulate the multi-core, thus developers would need to write several versions of the same app to run on different platforms, which will be a huge burden.<br><strong>Q: I believe if that’s the case, there must be some genius trying to solve it. One saying in computer science is “there must be some connection by interlayers between a gap.”</strong><br>A: Exactly. In the computer world, it always will happen. In fact, in the past decades, many individals, institutions, universities and companies have developed many tools to make multi-core programming much easier, like OpenMP, which makes parallelism on shared memory machines much easier.<br><strong>Q: Sounds great! Is OpenMP a library? Sometimes, it is not an easy job to compile and link an library to user’s programs. Especially for the libraries with poor installation guides.</strong><br>A: No. It isn’t. It is just a set of APIs built in your compiler, like GNU GCC, LLVM, Intel C Compiler, IBM XL etc. The OpenMP is evolving, and the compilers keep updating their supports to OpenMP (see <a href="https://www.openmp.org/resources/openmp-compilers-tools/" target="_blank" rel="noopener">OpenMP Compilers</a>). You don’t need any extra installations besides your compiler.</p>
+<p><strong>Q: I like this design, a very clean way. Now everything is ready (just compiler, no extra preparation!), could we start?</strong><br>A: Sure, but could you tell me what compiler you use?<br><strong>Q: Just GNU GCC compiler.</strong><br>A: In fact, GCC is a great opensource and free compiler, but to learn the parallelism technique, I want to start from a commercial compiler: Intel C/C++ compiler: icc/icpc. It has been optimized for parallelism for a long time. Also it has more interesting functions.<br><strong>Q: I can’t afford its price probably.</strong><br>A: Every student has a one-year free license. It has been included into the Intel Parallel Studio XE, see<a href="https://software.intel.com/en-us/c-compilers" target="_blank" rel="noopener">Intel Parallel Studio XE</a>.<br><strong>Q: That’s great!</strong><br>A: Parallelism has a hierarchy with many differnt layers. We can start from the simplest case. What’s the simplest operation you can think about in your code?<br><strong>Q: Addition operation to two scalars or vectors. Because I am doing research on computational science, the most operations are arithmetic. I want to parallelize the addition operations on vectors. For example, $c[i]=a[i]+b[i]$, and each array $a[\ ],\ b[\ ],\ c[\ ]$ has 100 elements. I want to add those 100 elements at the same time. Is it possible?</strong><br>A: Yes. There are many ways to realize that. I call them different parallelism levels:<br><img src="/images/parallel_layers.png" alt="parallel_layers"></p>
+<ol>
+<li>The highest level is you can split the 100 elements and send one element per array $a[i]$ and $b[i]$ to 100 CPU cores and do the addition operations. At the end, one core gather all $c[i]$ from other 99 cores. As you see, there is very much communication between cores. In fact, it’s hard to have one single machine with 100 cores, so usually you have like 5 machines, we call them nodes, with 20 cores for each. An problem comes here. Because machines are normally connected via Ethernet network, whose bandwidth is about 10 Gigabit per second, the cost on communication is the dominated factor of speedup. Of course, some latests clusters use Infiniband hardware with higher bandwidth <a href="https://en.wikipedia.org/wiki/InfiniBand" target="_blank" rel="noopener">Infiniband Wik</a>. Even for those cores in the same machine, their memories are not shared. Each core has its own part of physical memory on that node. Unlike the cross-machine communication, within one machine, cores can communicate with each other with a much faster speed (see DDR4’s bandwidth is ~60 Gbit/s <a href="https://www.techspot.com/news/62129-ddr3-vs-ddr4-raw-bandwidth-numbers.html" target="_blank" rel="noopener">DDR4 bandwidth</a> and also the MPI library and OS will do some optimization on this), so the cross-node message passing is the bottle-neck.</li>
+<li>The second highest level is that you can put those 100 elements to the 20 cores within one machine. Each core will take 5 elements from array $a$ and $b$ and do 5 addition operations. This time, some cores can share the memory, thus there is no need to send and receive any data between cores. This is the so called multi-threading technique.</li>
+<li>The next level is the parallelism on a single core. There are some concepts, which I even don’t know much right now, like pipelining, superscalar execution, out-of-order execution and so on. Currently, I will only focus on a situation called vectorization. It is easy to guess what it will do. For the previous example, if we only use a single core to add array $a$ and array $b$, we don’t need to add their elements one by one, like adding scalars intead of vectors. Many modern CPU supports vectorization in hardware, because it has the so-called vector register, which can be used for summing up a segment of array $a$ and $b$ within one clock cycle. A simple picture is below</li>
+<li>Other types of parallelism, for example add some other devices (e.g. GPU) to help CPU on the computation intensive tasks. This topic has been covered in one of my previous blogs in <a href="https://feilinx.com/2019/05/05/burn-gpu-calorie-3/">GPU blog</a>.</li>
+</ol>
+<p><strong>Q: Hmm… so many levels of parallelism. parallel programming sounds very complex. If only we can increase the CPU frequency more! Now there will be no free lunch any more. Programmers have to learn how to make their applications run in parallel to scale.</strong><br>A: Exactly, you are right. The CPU frequency almost approaches the physical limit. We have to admit this fact. Before a new technology comes up and replace the current technology, computer scientists need to think about how to scale. Parallelism seems to be the most promising one. Actually, most of current programs, e.g. various apps in your mobile phone, do not exploit the benefits of the multi-core hardware, so software should catch up!<br><strong>Q: Really? That’s a huge waste. I want to learn parallel programming. Could we start from the vectorization?</strong><br>A: Sure. It is in a relatively low level of parallelism. It’s hard to imagine how multiple arithmetic operations can be done using one clock cycle. It must be implemented in the hardware, right?<br><strong>Q: Agree. Software can not solve this kind of problems.</strong><br>A: Yes. At the beginning, all the CPUs are scalar processors, which can only deal with scalars. Then some scientists think about how to speedup. Because in many numerical code, operations on a large vectors are very common, so that each element of a array executes the same instruction. They want to let the CPU execute those same instructions at the same time, so vector processors come out. It can’t be realized from software side, it is a new type of CPU. This kind of CPU can conduct arithmetic operation on a set of several scalars, which is called a “vector”. Before talking about the vector addition, do you know what happens when two scalars are added in CPU?<br><strong>Q: Yes. The CPU firstly retrieve these two scalars into registers, and then add them up using the ALU, and finally write the result back to the memory. Is that right?</strong><br>A: Right. Similarly, now we want to add 2 arrays, each has 4 elements. The “powerful” CPU firstly retrieve these two vectors into “vector registers”, and then add $a[i]$ and $b[i]$ for $i=0,1,2,3$ using a single “vector” instruction, like below<br><img src="/images/vectorization.png" alt="parallel_layers"><br><strong>Q: Amazing. Which kind of CPUs can support vectorization?</strong><br>A: I only know a little about Intel CPUs, so I can only tell you the Intel stuff for now, but it should be similar to AMD cores. The vectorization capability of Intel CPU is supported by the instruction set. It has been evovling for almost two decades from 64-bit MMX (meaningless initialism<a href="https://en.wikipedia.org/wiki/MMX_%28instruction_set%29" target="_blank" rel="noopener">MMX-Wikipedia</a>) to 128-bit SSE (Streaming SIMD Extentions), SSE2, SSE3, SSE4.2, and then to 256-bit AVX (Advanced Vector Extentions), AVX2 and now the 512-bit AVX-512. The number in xx-bit means how many bits can be stored in a vector register where the data can be processed together. Of course, the larger the vector register is, the better the performance will be.<br><strong>Q: Hmm… these names are very unfamiliar for me. Normally when I buy a computer, it writes like Intel i3, i5 or i7. How can I know their instruction sets?</strong><br>A: The i3/i5/i7 belongs to the Intel Core series. This series is mainly for general purpose, like gaming, graphics, or office. You can check their instruction sets in Intel website (e.g. <a href="https://www.intel.com/content/www/us/en/products/processors/core/i7-processors/i7-8565u.html" target="_blank" rel="noopener">Intel Core i7-8565U</a>). The i7 can only support up to AVX. Usually for scientific computing, we should use Intel Xeon series because it has more cores inside and better vectorization. For example, the Intel Xeon Phi 7250 has 68 cores and supports AVX-512. (<a href="https://ark.intel.com/products/94035/Intel-Xeon-Phi-Processor-7250-16GB-1_40-GHz-68-core" target="_blank" rel="noopener">Intel Xeon Phi 7250</a>).<br><strong>Q: I see. Even the Intel CPU has many kinds for different purposes. OK, let’s go back to the vectorization. Assume I have a Intel Xeon machine, which supports vectorization, do I need to do something to let the machine or my program to exploit this feature? Just like my smartphone, it has many physical sensors to sense the rotation and movement of my phone, but it will only function after I install a racing game app. I remember my teacher never talked about vectorization when I took the C/C++ course in the first year of my undergraduate.</strong><br>A: Good question. The vectorization is more related to the hardware, so it will be too much if it is included into a C/C++ course. The instruction set is what the CPU can do, which we can not change, and the code, which is in high level, is what our programmers can do. It seems that if a programmer doesn’t pay any attention on vectorization when he/she is programmin, the AVX-512 instruction set will be wasted. Is it right?<br><strong>Q: It is right for me. We programmers have to tell the machine “go to execute these additions using vectorized instruction” explicitly via some code, right?</strong><br>A: Correct but not common. For Intel CPUs, there is a good way to exactly control the vectorization, called Intel Intrinsics. The intrinsics is pretty much like a language between C and Assembly. It will be directly translated into corresponding assembly-level vectorized instruction by the Intel Compiler, but it is hardware dependent, thus less flexible. Here is an example. The following function is a intrinsics to multiply a and b, then add the intermediate results with c.<br><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">__m128d _mm_fmadd_pd (__m128d a, __m128d b, __m128d c)</span><br></pre></td></tr></table></figure><br>“fmadd” means “fused multiplication and addition”. “pd” means “packed double precision floating numbers”, where “packed” is equivalent to “vector”, which is opposite of scalar. “__m128d” is a data type of length = 128-bit. This kind of 128-bit number will be stored in xmm vector register (128-bit). There are 3 different kinds of vector registers shown in following table</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>vector register</th>
+<th style="text-align:center">length (bit)</th>
+<th style="text-align:center">supported ext.</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>xmm</td>
+<td style="text-align:center">128</td>
+<td style="text-align:center">SSE, AVX, AVX512</td>
+</tr>
+<tr>
+<td>ymm</td>
+<td style="text-align:center">256</td>
+<td style="text-align:center">AVX, AVX512</td>
+</tr>
+<tr>
+<td>zmm</td>
+<td style="text-align:center">512</td>
+<td style="text-align:center">AVX512</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Therefore, to use ymm vector registers (if supported), programmers have to call another intrinsics,<br><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">__m256d _mm256_fmadd_pd (__m256d a, __m256d b, __m256d c)</span><br></pre></td></tr></table></figure></p>
+<p>which makes too much trouble when tranplanting a code from one machine to another, because the intrinsics is hardware-dependent. Normally, we won’t do that.<br><strong>Q: That puts too much burden to programmers to develop as well as maintain. Is there any better way? like a wrapper of intrinsics?</strong><br>A: Correct! There is one “wrapper”! But as far as I know, there is only one explicit directive, which is hardware independent, to guide the vectorization. It is a directive provided by OpenMP:<br><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">pragma</span> omp simd</span></span><br></pre></td></tr></table></figure></p>
+<p>“simd” means single intruction multiple data, which is similar to the idea of vectorization. If a loop is acted by the above directive, the compiler will vectorize the body of loops forcely.<br><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">pragma</span> omp simd</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="keyword">for</span> (i=<span class="number">0</span>; i&lt;n; i++) &#123;</span><br><span class="line">    c[i] = a[i] + b[i];</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>The array a[] and b[] will be put to available vector registers (xmm, ymm, or zmm) in the current hardware. No need to worry about data type or vector length for programmers. The only thing is to make sure there is no data dependence between the components of vectors. A bad example of vectorization is<br><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">pragma</span> omp simd</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="keyword">for</span> (i=<span class="number">2</span>; i&lt;n; i++) &#123;</span><br><span class="line">    a[i] = a[i<span class="number">-1</span>] + a[i<span class="number">-2</span>];</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>The above vectorization will produce wrong results because the array a[]’s elements are dependent to each other.<br><strong>Q: This directive is very useful. I think it’s enough for vectorization, right?</strong><br>A: Not really. There are many other things you must be careful about, which will be talked about next time!</p>
+<p>Note:<br>Most content in this post comes from the online free course “Fundamentals of Parallelism on Intel Architecture” available at <a href="https://www.coursera.org/learn/parallelism-ia" target="_blank" rel="noopener">https://www.coursera.org/learn/parallelism-ia</a>.</p>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/05/05/burn-gpu-calorie-3/" rel="next" title="Burn GPU's Calories (3)">
+                <i class="fa fa-chevron-left"></i> Burn GPU's Calories (3)
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+      </div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+
+      <div class="site-overview-wrap sidebar-panel sidebar-panel-active">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Feilin Jia</p>
+              <div class="site-description motion-element" itemprop="description">Note on computing, IT, education, etc.</div>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">14</span>
+                    <span class="site-state-item-name">posts</span>
+                  </a>
+                </div>
+              
+
+              
+
+              
+            </nav>
+          
+
+          
+
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+
+      
+
+    </div>
+  </aside>
+  
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Feilin Jia</span>
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    
+      <span class="post-meta-item-text">Symbols count total: </span>
+    
+    <span title="Symbols count total">96k</span>
+  
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    
+      <span class="post-meta-item-text">Reading time total &asymp;</span>
+    
+    <span title="Reading time total">1:27</span>
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> v3.9.0</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> v7.0.1</div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-user"></i>
+    </span>
+    <span class="site-uv" title="Total Visitors">
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+    </span>
+  
+
+  
+    <span class="post-meta-divider">|</span>
+  
+
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-eye"></i>
+    </span>
+    <span class="site-pv" title="Total Views">
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+
+  
+
+
+  <script src="/js/src/utils.js?v=7.0.1"></script>
+
+  <script src="/js/src/motion.js?v=7.0.1"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/src/affix.js?v=7.0.1"></script>
+
+  <script src="/js/src/schemes/pisces.js?v=7.0.1"></script>
+
+
+
+  
+  <script src="/js/src/scrollspy.js?v=7.0.1"></script>
+<script src="/js/src/post-details.js?v=7.0.1"></script>
+
+
+
+  
+
+
+  <script src="/js/src/next-boot.js?v=7.0.1"></script>
+
+
+  
+
+  
+
+  
+
+  
+  
+  <script id="dsq-count-scr" src="https://feilinx.disqus.com/count.js" async></script>
+
+
+<script>
+  var disqus_config = function() {
+    this.page.url = "http://feilinx.com/2019/05/12/parallel-cpu-coursera/";
+    this.page.identifier = "2019/05/12/parallel-cpu-coursera/";
+    this.page.title = 'Vectorization I';
+    };
+  function loadComments() {
+    var d = document, s = d.createElement('script');
+    s.src = 'https://feilinx.disqus.com/embed.js';
+    s.setAttribute('data-timestamp', '' + +new Date());
+    (d.head || d.body).appendChild(s);
+  }
+  
+    loadComments();
+  
+</script>
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+  
+    
+      <script type="text/x-mathjax-config">
+  
+
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$', '$'], ['\\(', '\\)'] ],
+      processEscapes: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      
+      equationNumbers: {
+        autoNumber: 'AMS'
+      }
+    }
+  });
+  MathJax.Hub.Register.StartupHook('TeX Jax Ready', function() {
+    MathJax.InputJax.TeX.prefilterHooks.Add(function(data) {
+      if (data.display) {
+        var next = data.script.nextSibling;
+        while (next && next.nodeName.toLowerCase() === '#text') { next = next.nextSibling }
+        if (next && next.nodeName.toLowerCase() === 'br') { next.parentNode.removeChild(next) }
+      }
+    });
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for (i = 0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+<script src="//cdn.jsdelivr.net/npm/mathjax@2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+<style>
+.MathJax_Display {
+  overflow-x: scroll;
+  overflow-y: hidden;
+}
+</style><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({"tex2jax":{"inlineMath":[["$","$"],["\\(","\\)"]],"skipTags":["script","noscript","style","textarea","pre","code"],"processEscapes":true},"TeX":{"equationNumbers":{"autoNumber":"AMS"}}});
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
+
+    
+  
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
